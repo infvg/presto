@@ -207,6 +207,24 @@ public final class StatsRecordingSystemAccessControl
     }
 
     @Override
+    public void checkCanAlterColumn(Identity identity, AccessControlContext context, CatalogSchemaTableName table)
+    {
+        long start = System.nanoTime();
+        try {
+            delegate.get().checkCanAlterColumn(identity, context, table);
+        }
+        catch (RuntimeException e) {
+            stats.checkCanAlterColumn.recordFailure();
+            throw e;
+        }
+        finally {
+            long duration = System.nanoTime() - start;
+            context.getRuntimeStats().addMetricValue("systemAccessControl.checkCanAlterColumn", RuntimeUnit.NANO, duration);
+            stats.checkCanAlterColumn.record(duration);
+        }
+    }
+
+    @Override
     public void checkCanRenameSchema(Identity identity, AccessControlContext context, CatalogSchemaName schema, String newSchemaName)
     {
         long start = System.nanoTime();
@@ -774,6 +792,7 @@ public final class StatsRecordingSystemAccessControl
         final SystemAccessControlStats filterCatalogs = new SystemAccessControlStats();
         final SystemAccessControlStats checkCanCreateSchema = new SystemAccessControlStats();
         final SystemAccessControlStats checkCanDropSchema = new SystemAccessControlStats();
+        final SystemAccessControlStats checkCanAlterColumn = new SystemAccessControlStats();
         final SystemAccessControlStats checkCanRenameSchema = new SystemAccessControlStats();
         final SystemAccessControlStats checkCanShowSchemas = new SystemAccessControlStats();
         final SystemAccessControlStats filterSchemas = new SystemAccessControlStats();
@@ -909,6 +928,13 @@ public final class StatsRecordingSystemAccessControl
         public SystemAccessControlStats getCheckCanDropTable()
         {
             return checkCanDropTable;
+        }
+
+        @Managed
+        @Nested
+        public SystemAccessControlStats getCheckCanAlterColumn()
+        {
+            return checkCanAlterColumn;
         }
 
         @Managed

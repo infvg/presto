@@ -129,6 +129,7 @@ import java.util.stream.Collectors;
 import static com.facebook.presto.expressions.LogicalRowExpressions.TRUE_CONSTANT;
 import static com.facebook.presto.hive.BaseHiveColumnHandle.ColumnType.REGULAR;
 import static com.facebook.presto.hive.BaseHiveColumnHandle.ColumnType.SYNTHESIZED;
+import static com.facebook.presto.hive.HiveErrorCode.UNKNOWN_TABLE_TYPE;
 import static com.facebook.presto.hive.HiveUtil.PRESTO_QUERY_ID;
 import static com.facebook.presto.hive.MetadataUtils.getCombinedRemainingPredicate;
 import static com.facebook.presto.hive.MetadataUtils.getDiscretePredicates;
@@ -208,6 +209,7 @@ import static com.facebook.presto.spi.MaterializedViewStatus.MaterializedViewSta
 import static com.facebook.presto.spi.StandardErrorCode.ALREADY_EXISTS;
 import static com.facebook.presto.spi.StandardErrorCode.NOT_SUPPORTED;
 import static com.facebook.presto.spi.statistics.TableStatisticType.ROW_COUNT;
+import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.base.Verify.verify;
@@ -1769,6 +1771,23 @@ public abstract class IcebergAbstractMetadata
         }
         catch (NoSuchViewException e) {
             return false;
+        }
+    }
+
+    @Override
+    public void setColumnType(ConnectorSession session, ConnectorTableHandle tableHandle, ColumnHandle columnHandle, com.facebook.presto.common.type.Type type)
+    {
+        IcebergTableHandle table = (IcebergTableHandle) tableHandle;
+        IcebergColumnHandle column = (IcebergColumnHandle) columnHandle;
+
+        Table icebergTable = getIcebergTable(session, table.getSchemaTableName());
+        try {
+            icebergTable.updateSchema()
+                    .updateColumn(column.getName(), toIcebergType(type).asPrimitiveType())
+                    .commit();
+        }
+        catch (RuntimeException e) {
+            throw new PrestoException(UNKNOWN_TABLE_TYPE, "Failed to set column type: " + firstNonNull(e.getMessage(), e), e);
         }
     }
 }
