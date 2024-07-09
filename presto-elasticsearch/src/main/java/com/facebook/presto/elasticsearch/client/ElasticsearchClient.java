@@ -58,7 +58,7 @@ import org.elasticsearch.client.ResponseException;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.core.TimeValue;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
@@ -133,6 +133,8 @@ public class ElasticsearchClient
     private final boolean tlsEnabled;
     private final boolean ignorePublishAddress;
 
+    private final ElasticSearchClientUtils elasticSearchClientUtils = new ElasticSearchClientUtils();
+
     @Inject
     public ElasticsearchClient(
             ElasticsearchConfig config,
@@ -180,7 +182,7 @@ public class ElasticsearchClient
                     .toArray(HttpHost[]::new);
 
             if (hosts.length > 0 && !ignorePublishAddress) {
-                client.getLowLevelClient().setHosts(hosts);
+                elasticSearchClientUtils.setHosts(client, hosts);
             }
             this.nodes.set(nodes);
         }
@@ -197,8 +199,7 @@ public class ElasticsearchClient
             Optional<PasswordConfig> passwordConfig)
     {
         RestClientBuilder builder = RestClient.builder(
-                new HttpHost(config.getHost(), config.getPort(), config.isTlsEnabled() ? "https" : "http"))
-                .setMaxRetryTimeoutMillis((int) config.getMaxRetryTime().toMillis());
+                new HttpHost(config.getHost(), config.getPort(), config.isTlsEnabled() ? "https" : "http"));
 
         builder.setHttpClientConfigCallback(ignored -> {
             RequestConfig requestConfig = RequestConfig.custom()
@@ -569,12 +570,12 @@ public class ElasticsearchClient
 
         Response response;
         try {
-            response = client.getLowLevelClient()
-                    .performRequest(
+            response = elasticSearchClientUtils.performRequest(
                             "GET",
                             path,
                             ImmutableMap.of(),
                             new ByteArrayEntity(query.getBytes(UTF_8)),
+                            client,
                             new BasicHeader("Content-Type", "application/json"),
                             new BasicHeader("Accept-Encoding", "application/json"));
         }
@@ -618,7 +619,7 @@ public class ElasticsearchClient
                 .source(sourceBuilder);
 
         try {
-            return client.search(request);
+            return elasticSearchClientUtils.search(request, client);
         }
         catch (IOException e) {
             throw new PrestoException(ELASTICSEARCH_CONNECTION_ERROR, e);
@@ -655,7 +656,7 @@ public class ElasticsearchClient
                 .scroll(new TimeValue(scrollTimeout.toMillis()));
 
         try {
-            return client.searchScroll(request);
+            return elasticSearchClientUtils.searchScroll(request, client);
         }
         catch (IOException e) {
             throw new PrestoException(ELASTICSEARCH_CONNECTION_ERROR, e);
@@ -671,12 +672,12 @@ public class ElasticsearchClient
 
         Response response;
         try {
-            response = client.getLowLevelClient()
-                    .performRequest(
+            response = elasticSearchClientUtils.performRequest(
                             "GET",
                             format("/%s/_count?preference=_shards:%s", index, shard),
                             ImmutableMap.of(),
                             new StringEntity(sourceBuilder.toString()),
+                            client,
                             new BasicHeader("Content-Type", "application/json"));
         }
         catch (ResponseException e) {
@@ -700,7 +701,7 @@ public class ElasticsearchClient
         ClearScrollRequest request = new ClearScrollRequest();
         request.addScrollId(scrollId);
         try {
-            client.clearScroll(request);
+            elasticSearchClientUtils.clearScroll(request, client);
         }
         catch (IOException e) {
             throw new PrestoException(ELASTICSEARCH_CONNECTION_ERROR, e);
@@ -713,8 +714,7 @@ public class ElasticsearchClient
 
         Response response;
         try {
-            response = client.getLowLevelClient()
-                    .performRequest("GET", path);
+            response = elasticSearchClientUtils.performRequest("GET", path, client);
         }
         catch (IOException e) {
             throw new PrestoException(ELASTICSEARCH_CONNECTION_ERROR, e);

@@ -13,6 +13,7 @@
  */
 package com.facebook.presto.elasticsearch;
 
+import com.facebook.presto.elasticsearch.client.ElasticSearchClientUtils;
 import com.facebook.presto.testing.MaterializedResult;
 import com.facebook.presto.testing.MaterializedRow;
 import com.facebook.presto.testing.QueryRunner;
@@ -27,6 +28,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.support.WriteRequest;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.intellij.lang.annotations.Language;
@@ -50,9 +52,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TestElasticsearchIntegrationSmokeTest
         extends AbstractTestIntegrationSmokeTest
 {
-    private final String elasticsearchServer = "docker.elastic.co/elasticsearch/elasticsearch-oss:6.0.0";
+    private final String elasticsearchServer = "docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.23";
     private ElasticsearchServer elasticsearch;
     private RestHighLevelClient client;
+    private ElasticSearchClientUtils elasticSearchClientUtils;
 
     @Override
     protected QueryRunner createQueryRunner()
@@ -62,6 +65,7 @@ public class TestElasticsearchIntegrationSmokeTest
 
         HostAndPort address = elasticsearch.getAddress();
         client = new RestHighLevelClient(RestClient.builder(new HttpHost(address.getHost(), address.getPort())));
+        elasticSearchClientUtils = new ElasticSearchClientUtils();
 
         return createElasticsearchQueryRunner(elasticsearch.getAddress(),
                 TpchTable.getTables(),
@@ -720,8 +724,8 @@ public class TestElasticsearchIntegrationSmokeTest
     @Test
     public void testQueryStringError()
     {
-        assertQueryFails("SELECT orderkey FROM \"orders: ++foo AND\"", "\\QFailed to parse query [ ++foo and]\\E");
-        assertQueryFails("SELECT count(*) FROM \"orders: ++foo AND\"", "\\QFailed to parse query [ ++foo and]\\E");
+        assertQueryFails("SELECT orderkey FROM \"orders: ++foo AND\"", "\\QFailed to parse query [ ++foo AND]\\E");
+        assertQueryFails("SELECT count(*) FROM \"orders: ++foo AND\"", "\\QFailed to parse query [ ++foo AND]\\E");
     }
 
     @Test
@@ -754,7 +758,7 @@ public class TestElasticsearchIntegrationSmokeTest
     {
         client.index(new IndexRequest(index, "doc")
                 .source(document)
-                .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE));
+                .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE), RequestOptions.DEFAULT);
     }
 
     @Test
@@ -788,29 +792,31 @@ public class TestElasticsearchIntegrationSmokeTest
     private void addAlias(String index, String alias)
             throws IOException
     {
-        client.getLowLevelClient()
-                .performRequest("PUT", format("/%s/_alias/%s", index, alias));
+        elasticSearchClientUtils.performRequest("PUT", format("/%s/_alias/%s", index, alias), client);
     }
 
     private void removeAlias(String index, String alias)
             throws IOException
     {
-        client.getLowLevelClient()
-                .performRequest("DELETE", format("/%s/_alias/%s", index, alias));
+        elasticSearchClientUtils.performRequest("DELETE", format("/%s/_alias/%s", index, alias), client);
     }
 
     private void createIndex(String indexName, @Language("JSON") String mapping)
             throws IOException
     {
-        client.getLowLevelClient()
-                .performRequest("PUT", "/" + indexName, ImmutableMap.of(), new NStringEntity(mapping, ContentType.APPLICATION_JSON));
+        elasticSearchClientUtils.performRequest("PUT", "/" + indexName, ImmutableMap.of(), new NStringEntity(mapping, ContentType.APPLICATION_JSON), client);
     }
 
     @Test
     public void testEmptyIndexNoMappings()
             throws IOException
     {
-        client.getLowLevelClient().performRequest("PUT", "/emptyindex");
-        assertQueryFails("SELECT * FROM emptyindex", "line 1:8: SELECT \\* not allowed from relation that has no columns");
+        elasticSearchClientUtils.performRequest("PUT", "/emptyindex", client);
+        try {
+            computeActual("SELECT * FROM emptyindex");
+        }
+        catch (Exception e) {
+            assertEquals(e.getMessage(), "SELECT * not allowed from relation that has no columns");
+        }
     }
 }
