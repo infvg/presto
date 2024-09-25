@@ -718,6 +718,10 @@
                                 <artifactId>slf4j-jdk14</artifactId>
                             </dependency>
                         </ignoredDependencies>
+                        <ignoredClassPatterns>
+                            <ignoredClassPattern>META-INF.versions.9.module-info</ignoredClassPattern>
+                            <ignoredClassPattern>module-info</ignoredClassPattern>
+                        </ignoredClassPatterns>
                     </configuration>
                 </plugin>
             </plugins>
