@@ -1,0 +1,241 @@
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.facebook.presto:presto-delta:presto-plugin:0.285.1
+[WARNING] 'dependencyManagement.dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: com.facebook.presto:presto-singlestore:jar -> duplicate declaration of version ${project.version} @ com.facebook.presto:presto-root:0.285.1, /Users/hazmi/IdeaProjects/presto/pom.xml, line 448, column 25
+[WARNING] 'dependencyManagement.dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: com.facebook.presto:presto-jmx:jar -> duplicate declaration of version ${project.version} @ com.facebook.presto:presto-root:0.285.1, /Users/hazmi/IdeaProjects/presto/pom.xml, line 657, column 25
+[WARNING] 'dependencyManagement.dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: com.singlestore:singlestore-jdbc-client:jar -> duplicate declaration of version 1.1.9 @ com.facebook.presto:presto-root:0.285.1, /Users/hazmi/IdeaProjects/presto/pom.xml, line 1285, column 25
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] 
+[INFO] ------------------< com.facebook.presto:presto-delta >------------------
+[INFO] Building presto-delta 0.285.1
+[INFO] ---------------------------[ presto-plugin ]----------------------------
+Downloading from airlift: https://na.artifactory.swg-devops.com/artifactory/hyc-cpd-skywalker-team-lakehouse-on-prem-docker-local/airlift/com/facebook/presto/presto-hive-metastore/0.285.1/presto-hive-metastore-0.285.1.pom
+Downloading from dataconn: https://na.artifactory.swg-devops.com:443/artifactory/dataconn-maven-local/com/facebook/presto/presto-hive-metastore/0.285.1/presto-hive-metastore-0.285.1.pom
+Downloading from hyc-mpc: https://na.artifactory.swg-devops.com:443/artifactory/hyc-mpc-artifactory-team-generic-local/data-privacy/com/facebook/presto/presto-hive-metastore/0.285.1/presto-hive-metastore-0.285.1.pom
+Downloading from maven-repo: https://na.artifactory.swg-devops.com:443/artifactory/hyc-cpd-skywalker-team-lakehouse-on-prem-wxd-maven-local/com/facebook/presto/presto-hive-metastore/0.285.1/presto-hive-metastore-0.285.1.pom
+Downloading from sigar: https://repository.mulesoft.org/nexus/content/repositories/public/com/facebook/presto/presto-hive-metastore/0.285.1/presto-hive-metastore-0.285.1.pom
+Progress (1): 3.8/7.2 kBProgress (1): 7.2 kB                        Downloaded from sigar: https://repository.mulesoft.org/nexus/content/repositories/public/com/facebook/presto/presto-hive-metastore/0.285.1/presto-hive-metastore-0.285.1.pom (7.2 kB at 7.1 kB/s)
+[WARNING] The POM for com.facebook.presto:presto-hive-metastore:jar:0.285.1 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+Downloading from airlift: https://na.artifactory.swg-devops.com/artifactory/hyc-cpd-skywalker-team-lakehouse-on-prem-docker-local/airlift/com/facebook/presto/presto-parquet/0.285.1/presto-parquet-0.285.1.pom
+Downloading from dataconn: https://na.artifactory.swg-devops.com:443/artifactory/dataconn-maven-local/com/facebook/presto/presto-parquet/0.285.1/presto-parquet-0.285.1.pom
+Downloading from hyc-mpc: https://na.artifactory.swg-devops.com:443/artifactory/hyc-mpc-artifactory-team-generic-local/data-privacy/com/facebook/presto/presto-parquet/0.285.1/presto-parquet-0.285.1.pom
+Downloading from maven-repo: https://na.artifactory.swg-devops.com:443/artifactory/hyc-cpd-skywalker-team-lakehouse-on-prem-wxd-maven-local/com/facebook/presto/presto-parquet/0.285.1/presto-parquet-0.285.1.pom
+Downloading from sigar: https://repository.mulesoft.org/nexus/content/repositories/public/com/facebook/presto/presto-parquet/0.285.1/presto-parquet-0.285.1.pom
+Progress (1): 3.8/10 kBProgress (1): 7.8/10 kBProgress (1): 10 kB                       Downloaded from sigar: https://repository.mulesoft.org/nexus/content/repositories/public/com/facebook/presto/presto-parquet/0.285.1/presto-parquet-0.285.1.pom (10 kB at 27 kB/s)
+[WARNING] The POM for com.facebook.presto:presto-parquet:jar:0.285.1 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+Downloading from airlift: https://na.artifactory.swg-devops.com/artifactory/hyc-cpd-skywalker-team-lakehouse-on-prem-docker-local/airlift/com/facebook/presto/presto-hive/0.285.1/presto-hive-0.285.1.pom
+Downloading from dataconn: https://na.artifactory.swg-devops.com:443/artifactory/dataconn-maven-local/com/facebook/presto/presto-hive/0.285.1/presto-hive-0.285.1.pom
+Downloading from hyc-mpc: https://na.artifactory.swg-devops.com:443/artifactory/hyc-mpc-artifactory-team-generic-local/data-privacy/com/facebook/presto/presto-hive/0.285.1/presto-hive-0.285.1.pom
+Downloading from maven-repo: https://na.artifactory.swg-devops.com:443/artifactory/hyc-cpd-skywalker-team-lakehouse-on-prem-wxd-maven-local/com/facebook/presto/presto-hive/0.285.1/presto-hive-0.285.1.pom
+Downloading from sigar: https://repository.mulesoft.org/nexus/content/repositories/public/com/facebook/presto/presto-hive/0.285.1/presto-hive-0.285.1.pom
+Progress (1): 3.8/23 kBProgress (1): 7.8/23 kBProgress (1): 12/23 kB Progress (1): 16/23 kBProgress (1): 20/23 kBProgress (1): 23 kB                      Downloaded from sigar: https://repository.mulesoft.org/nexus/content/repositories/public/com/facebook/presto/presto-hive/0.285.1/presto-hive-0.285.1.pom (23 kB at 40 kB/s)
+[WARNING] The POM for com.facebook.presto:presto-hive:jar:0.285.1 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+Downloading from airlift: https://na.artifactory.swg-devops.com/artifactory/hyc-cpd-skywalker-team-lakehouse-on-prem-docker-local/airlift/com/facebook/presto/presto-cache/0.285.1/presto-cache-0.285.1.pom
+Downloading from dataconn: https://na.artifactory.swg-devops.com:443/artifactory/dataconn-maven-local/com/facebook/presto/presto-cache/0.285.1/presto-cache-0.285.1.pom
+Downloading from hyc-mpc: https://na.artifactory.swg-devops.com:443/artifactory/hyc-mpc-artifactory-team-generic-local/data-privacy/com/facebook/presto/presto-cache/0.285.1/presto-cache-0.285.1.pom
+Downloading from maven-repo: https://na.artifactory.swg-devops.com:443/artifactory/hyc-cpd-skywalker-team-lakehouse-on-prem-wxd-maven-local/com/facebook/presto/presto-cache/0.285.1/presto-cache-0.285.1.pom
+Downloading from sigar: https://repository.mulesoft.org/nexus/content/repositories/public/com/facebook/presto/presto-cache/0.285.1/presto-cache-0.285.1.pom
+Progress (1): 3.8/4.3 kBProgress (1): 4.3 kB                        Downloaded from sigar: https://repository.mulesoft.org/nexus/content/repositories/public/com/facebook/presto/presto-cache/0.285.1/presto-cache-0.285.1.pom (4.3 kB at 12 kB/s)
+[WARNING] The POM for com.facebook.presto:presto-main:jar:0.285.1 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+[WARNING] The POM for com.facebook.presto:presto-main:jar:tests:0.285.1 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ presto-delta ---
+Downloading from airlift: https://na.artifactory.swg-devops.com/artifactory/hyc-cpd-skywalker-team-lakehouse-on-prem-docker-local/airlift/com/facebook/presto/presto-hive-metastore/0.285.1/presto-hive-metastore-0.285.1.jar
+Downloading from airlift: https://na.artifactory.swg-devops.com/artifactory/hyc-cpd-skywalker-team-lakehouse-on-prem-docker-local/airlift/com/facebook/presto/presto-cache/0.285.1/presto-cache-0.285.1.jar
+Downloading from airlift: https://na.artifactory.swg-devops.com/artifactory/hyc-cpd-skywalker-team-lakehouse-on-prem-docker-local/airlift/com/facebook/presto/presto-parquet/0.285.1/presto-parquet-0.285.1.jar
+Downloading from airlift: https://na.artifactory.swg-devops.com/artifactory/hyc-cpd-skywalker-team-lakehouse-on-prem-docker-local/airlift/com/facebook/presto/presto-hive/0.285.1/presto-hive-0.285.1.jar
+Downloading from dataconn: https://na.artifactory.swg-devops.com:443/artifactory/dataconn-maven-local/com/facebook/presto/presto-hive-metastore/0.285.1/presto-hive-metastore-0.285.1.jar
+Downloading from dataconn: https://na.artifactory.swg-devops.com:443/artifactory/dataconn-maven-local/com/facebook/presto/presto-cache/0.285.1/presto-cache-0.285.1.jar
+Downloading from dataconn: https://na.artifactory.swg-devops.com:443/artifactory/dataconn-maven-local/com/facebook/presto/presto-parquet/0.285.1/presto-parquet-0.285.1.jar
+Downloading from dataconn: https://na.artifactory.swg-devops.com:443/artifactory/dataconn-maven-local/com/facebook/presto/presto-hive/0.285.1/presto-hive-0.285.1.jar
+Downloading from hyc-mpc: https://na.artifactory.swg-devops.com:443/artifactory/hyc-mpc-artifactory-team-generic-local/data-privacy/com/facebook/presto/presto-hive-metastore/0.285.1/presto-hive-metastore-0.285.1.jar
+Downloading from hyc-mpc: https://na.artifactory.swg-devops.com:443/artifactory/hyc-mpc-artifactory-team-generic-local/data-privacy/com/facebook/presto/presto-cache/0.285.1/presto-cache-0.285.1.jar
+Downloading from hyc-mpc: https://na.artifactory.swg-devops.com:443/artifactory/hyc-mpc-artifactory-team-generic-local/data-privacy/com/facebook/presto/presto-hive/0.285.1/presto-hive-0.285.1.jar
+Downloading from hyc-mpc: https://na.artifactory.swg-devops.com:443/artifactory/hyc-mpc-artifactory-team-generic-local/data-privacy/com/facebook/presto/presto-parquet/0.285.1/presto-parquet-0.285.1.jar
+Downloading from maven-repo: https://na.artifactory.swg-devops.com:443/artifactory/hyc-cpd-skywalker-team-lakehouse-on-prem-wxd-maven-local/com/facebook/presto/presto-hive-metastore/0.285.1/presto-hive-metastore-0.285.1.jar
+Downloading from maven-repo: https://na.artifactory.swg-devops.com:443/artifactory/hyc-cpd-skywalker-team-lakehouse-on-prem-wxd-maven-local/com/facebook/presto/presto-cache/0.285.1/presto-cache-0.285.1.jar
+Downloading from maven-repo: https://na.artifactory.swg-devops.com:443/artifactory/hyc-cpd-skywalker-team-lakehouse-on-prem-wxd-maven-local/com/facebook/presto/presto-hive/0.285.1/presto-hive-0.285.1.jar
+Downloading from maven-repo: https://na.artifactory.swg-devops.com:443/artifactory/hyc-cpd-skywalker-team-lakehouse-on-prem-wxd-maven-local/com/facebook/presto/presto-parquet/0.285.1/presto-parquet-0.285.1.jar
+Downloading from sigar: https://repository.mulesoft.org/nexus/content/repositories/public/com/facebook/presto/presto-hive-metastore/0.285.1/presto-hive-metastore-0.285.1.jar
+Downloading from sigar: https://repository.mulesoft.org/nexus/content/repositories/public/com/facebook/presto/presto-cache/0.285.1/presto-cache-0.285.1.jar
+Downloading from sigar: https://repository.mulesoft.org/nexus/content/repositories/public/com/facebook/presto/presto-hive/0.285.1/presto-hive-0.285.1.jar
+Downloading from sigar: https://repository.mulesoft.org/nexus/content/repositories/public/com/facebook/presto/presto-parquet/0.285.1/presto-parquet-0.285.1.jar
+Progress (1): 3.7/452 kBProgress (1): 7.8/452 kBProgress (1): 12/452 kB Progress (2): 12/452 kB | 3.7/396 kBProgress (2): 12/452 kB | 7.8/396 kBProgress (2): 12/452 kB | 12/396 kB Progress (2): 16/452 kB | 12/396 kBProgress (2): 20/452 kB | 12/396 kBProgress (2): 24/452 kB | 12/396 kBProgress (2): 28/452 kB | 12/396 kBProgress (2): 32/452 kB | 12/396 kBProgress (3): 32/452 kB | 12/396 kB | 3.7/49 kBProgress (3): 37/452 kB | 12/396 kB | 3.7/49 kBProgress (3): 37/452 kB | 12/396 kB | 7.8/49 kBProgress (3): 41/452 kB | 12/396 kB | 7.8/49 kBProgress (3): 41/452 kB | 12/396 kB | 12/49 kB Progress (3): 41/452 kB | 16/396 kB | 12/49 kBProgress (3): 41/452 kB | 20/396 kB | 12/49 kBProgress (3): 41/452 kB | 24/396 kB | 12/49 kBProgress (3): 41/452 kB | 28/396 kB | 12/49 kBProgress (3): 41/452 kB | 32/396 kB | 12/49 kBProgress (3): 41/452 kB | 37/396 kB | 12/49 kBProgress (3): 41/452 kB | 41/396 kB | 12/49 kBProgress (4): 41/452 kB | 41/396 kB | 12/49 kB | 0/1.1 MBProgress (4): 41/452 kB | 41/396 kB | 12/49 kB | 0/1.1 MBProgress (4): 41/452 kB | 41/396 kB | 16/49 kB | 0/1.1 MBProgress (4): 41/452 kB | 41/396 kB | 20/49 kB | 0/1.1 MBProgress (4): 45/452 kB | 41/396 kB | 20/49 kB | 0/1.1 MBProgress (4): 45/452 kB | 41/396 kB | 24/49 kB | 0/1.1 MBProgress (4): 45/452 kB | 41/396 kB | 26/49 kB | 0/1.1 MBProgress (4): 45/452 kB | 41/396 kB | 31/49 kB | 0/1.1 MBProgress (4): 49/452 kB | 41/396 kB | 31/49 kB | 0/1.1 MBProgress (4): 49/452 kB | 41/396 kB | 35/49 kB | 0/1.1 MBProgress (4): 53/452 kB | 41/396 kB | 35/49 kB | 0/1.1 MBProgress (4): 53/452 kB | 41/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 57/452 kB | 41/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 61/452 kB | 41/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 65/452 kB | 41/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 69/452 kB | 41/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 73/452 kB | 41/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 77/452 kB | 41/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 82/452 kB | 41/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 86/452 kB | 41/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 90/452 kB | 41/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 41/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 45/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 49/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 53/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 57/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 61/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 65/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 69/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 73/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 77/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 82/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 86/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 90/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 93/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 93/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 93/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 93/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 93/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 93/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 93/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 93/396 kB | 39/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 93/396 kB | 43/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 93/396 kB | 47/49 kB | 0/1.1 MBProgress (4): 93/452 kB | 93/396 kB | 49 kB | 0/1.1 MB   Progress (4): 98/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 102/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 106/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 110/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 114/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 118/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 122/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 126/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 130/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 134/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 138/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 143/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 147/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 151/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 155/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 159/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 163/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 167/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 171/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 175/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 179/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 184/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 188/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 192/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 196/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 200/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 93/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 98/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 102/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 106/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 110/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 114/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 118/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 122/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 126/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 130/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 134/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 138/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 143/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 147/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 151/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 155/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 159/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 163/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 167/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 171/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 175/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 179/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 184/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 188/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 192/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 196/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 196/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 196/396 kB | 49 kB | 0/1.1 MBProgress (4): 204/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 204/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 204/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 204/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 204/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 204/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 204/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 204/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 204/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 208/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 212/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 216/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 220/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 225/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 229/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 233/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 237/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 241/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 245/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 249/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 253/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 257/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 261/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 265/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 270/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 274/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 278/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 282/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 286/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 290/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MBProgress (4): 294/452 kB | 196/396 kB | 49 kB | 0.1/1.1 MB                                                          Downloaded from sigar: https://repository.mulesoft.org/nexus/content/repositories/public/com/facebook/presto/presto-cache/0.285.1/presto-cache-0.285.1.jar (49 kB at 33 kB/s)
+Progress (3): 298/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 302/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 306/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 311/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 315/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 319/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 323/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 327/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 331/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 335/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 339/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 343/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 347/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 351/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 356/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 360/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 364/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 368/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 372/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 376/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 380/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 384/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 388/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 392/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 397/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 401/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 405/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 409/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 413/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 417/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 421/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 196/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 200/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 204/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 208/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 212/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 216/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 220/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 225/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 229/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 233/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 237/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 241/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 245/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 249/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 253/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 257/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 261/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 265/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 270/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 274/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 278/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 282/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 286/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 290/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 294/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 298/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 302/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 306/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 311/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 315/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 319/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 323/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 327/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 331/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 335/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 339/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 343/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 347/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 351/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 356/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 360/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 364/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 368/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 372/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 376/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 380/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 384/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 388/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 392/396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.1/1.1 MB    Progress (3): 425/452 kB | 396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.1/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 425/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 429/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 429/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 429/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 429/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 433/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 438/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 442/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 446/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 450/452 kB | 396 kB | 0.2/1.1 MBProgress (3): 452 kB | 396 kB | 0.2/1.1 MB                                              Downloaded from sigar: https://repository.mulesoft.org/nexus/content/repositories/public/com/facebook/presto/presto-parquet/0.285.1/presto-parquet-0.285.1.jar (396 kB at 227 kB/s)
+Progress (2): 452 kB | 0.2/1.1 MBProgress (2): 452 kB | 0.2/1.1 MBProgress (2): 452 kB | 0.2/1.1 MBProgress (2): 452 kB | 0.2/1.1 MBProgress (2): 452 kB | 0.2/1.1 MBProgress (2): 452 kB | 0.2/1.1 MBProgress (2): 452 kB | 0.2/1.1 MBProgress (2): 452 kB | 0.2/1.1 MBProgress (2): 452 kB | 0.2/1.1 MBProgress (2): 452 kB | 0.2/1.1 MBProgress (2): 452 kB | 0.2/1.1 MBProgress (2): 452 kB | 0.3/1.1 MBProgress (2): 452 kB | 0.3/1.1 MBProgress (2): 452 kB | 0.3/1.1 MBProgress (2): 452 kB | 0.3/1.1 MBProgress (2): 452 kB | 0.3/1.1 MBProgress (2): 452 kB | 0.3/1.1 MBProgress (2): 452 kB | 0.3/1.1 MB                                 Downloaded from sigar: https://repository.mulesoft.org/nexus/content/repositories/public/com/facebook/presto/presto-hive-metastore/0.285.1/presto-hive-metastore-0.285.1.jar (452 kB at 252 kB/s)
+Progress (1): 0.3/1.1 MBProgress (1): 0.3/1.1 MBProgress (1): 0.3/1.1 MBProgress (1): 0.3/1.1 MBProgress (1): 0.3/1.1 MBProgress (1): 0.3/1.1 MBProgress (1): 0.3/1.1 MBProgress (1): 0.3/1.1 MBProgress (1): 0.3/1.1 MBProgress (1): 0.3/1.1 MBProgress (1): 0.3/1.1 MBProgress (1): 0.3/1.1 MBProgress (1): 0.3/1.1 MBProgress (1): 0.3/1.1 MBProgress (1): 0.3/1.1 MBProgress (1): 0.3/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.4/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.5/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.6/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.7/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.8/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 0.9/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.0/1.1 MBProgress (1): 1.1/1.1 MBProgress (1): 1.1/1.1 MBProgress (1): 1.1/1.1 MBProgress (1): 1.1/1.1 MBProgress (1): 1.1/1.1 MBProgress (1): 1.1 MB                        Downloaded from sigar: https://repository.mulesoft.org/nexus/content/repositories/public/com/facebook/presto/presto-hive/0.285.1/presto-hive-0.285.1.jar (1.1 MB at 459 kB/s)
+[INFO] com.facebook.presto:presto-delta:presto-plugin:0.285.1
+[INFO] +- io.delta:delta-standalone_2.12:jar:0.6.0:compile
+[INFO] |  +- io.delta:delta-storage:jar:2.2.0:compile
+[INFO] |  +- com.chuusai:shapeless_2.12:jar:2.3.4:compile
+[INFO] |  \- org.scala-lang.modules:scala-collection-compat_2.12:jar:2.4.3:compile
+[INFO] +- org.scala-lang:scala-library:jar:2.12.11:compile
+[INFO] +- commons-io:commons-io:jar:2.8.0:compile
+[INFO] +- com.facebook.airlift:bootstrap:jar:0.207:compile
+[INFO] |  +- com.facebook.airlift:log-manager:jar:0.207:compile
+[INFO] |  |  +- org.slf4j:slf4j-jdk14:jar:1.7.32:runtime
+[INFO] |  |  +- org.slf4j:log4j-over-slf4j:jar:1.7.32:runtime
+[INFO] |  |  \- org.slf4j:jcl-over-slf4j:jar:1.7.32:runtime
+[INFO] |  \- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] +- com.facebook.airlift:json:jar:0.207:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.13.4:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.13.4:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.13.4:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.13.4:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-joda:jar:2.13.4:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.13.4:compile
+[INFO] |  \- com.fasterxml.jackson.dataformat:jackson-dataformat-smile:jar:2.13.4:compile
+[INFO] +- com.facebook.airlift:log:jar:0.207:compile
+[INFO] +- com.facebook.airlift:configuration:jar:0.207:compile
+[INFO] |  +- org.apache.bval:bval-jsr:jar:2.0.0:compile
+[INFO] |  \- cglib:cglib-nodep:jar:3.2.5:compile
+[INFO] +- com.google.guava:guava:jar:26.0-jre:compile
+[INFO] |  +- com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[INFO] |  +- org.checkerframework:checker-qual:jar:3.37.0:compile
+[INFO] |  +- com.google.errorprone:error_prone_annotations:jar:2.1.3:compile
+[INFO] |  +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- com.google.inject:guice:jar:4.2.2:compile
+[INFO] |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO] +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] +- javax.inject:javax.inject:jar:1:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-databind:jar:2.13.4:compile
+[INFO] +- com.facebook.presto:presto-spi:jar:0.285.1:provided
+[INFO] +- com.facebook.presto:presto-common:jar:0.285.1:provided
+[INFO] +- com.facebook.drift:drift-api:jar:1.37:provided
+[INFO] +- io.airlift:slice:jar:0.38:provided
+[INFO] +- io.airlift:units:jar:1.3:provided
+[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.13.4:provided
+[INFO] +- com.facebook.presto:presto-hive-metastore:jar:0.285.1:compile
+[INFO] +- com.facebook.presto.hive:hive-apache-ibm:jar:3.0.0-8:compile
+[INFO] +- com.facebook.presto:presto-hive-common:jar:0.285.1:compile
+[INFO] +- com.facebook.presto:presto-parquet:jar:0.285.1:compile
+[INFO] +- com.facebook.presto:presto-memory-context:jar:0.285.1:compile
+[INFO] +- com.facebook.presto.hadoop:hadoop-apache2:jar:2.7.4-9.4:compile
+[INFO] +- org.weakref:jmxutils:jar:1.19:compile
+[INFO] +- org.openjdk.jol:jol-core:jar:0.2:provided
+[INFO] +- com.facebook.presto:presto-hive:jar:0.285.1:compile
+[INFO] +- com.facebook.presto:presto-cache:jar:0.285.1:compile
+[INFO] |  \- org.alluxio:alluxio-shaded-client:jar:304:compile
+[INFO] +- com.facebook.airlift:concurrent:jar:0.207:compile
+[INFO] +- com.facebook.presto:presto-tests:jar:0.285.1:test
+[INFO] |  +- com.facebook.presto:presto-client:jar:0.285.1:test
+[INFO] |  |  +- com.google.auth:google-auth-library-oauth2-http:jar:0.12.0:test
+[INFO] |  |  |  +- com.google.auth:google-auth-library-credentials:jar:0.12.0:test
+[INFO] |  |  |  +- com.google.http-client:google-http-client:jar:1.27.0:test
+[INFO] |  |  |  |  \- org.apache.httpcomponents:httpclient:jar:4.5.13:test
+[INFO] |  |  |  \- com.google.http-client:google-http-client-jackson2:jar:1.27.0:test
+[INFO] |  |  +- com.squareup.okhttp3:okhttp-urlconnection:jar:3.14.9:test
+[INFO] |  |  \- net.jodah:failsafe:jar:2.0.1:test
+[INFO] |  +- com.facebook.presto:presto-parser:jar:0.285.1:test
+[INFO] |  |  \- org.antlr:antlr4-runtime:jar:4.7.1:test
+[INFO] |  +- com.facebook.presto:presto-analyzer:jar:0.285.1:test
+[INFO] |  +- com.facebook.presto:presto-function-namespace-managers:jar:0.285.1:test
+[INFO] |  |  +- com.facebook.drift:drift-client:jar:1.37:test
+[INFO] |  |  +- com.facebook.drift:drift-transport-spi:jar:1.37:test
+[INFO] |  |  +- com.facebook.presto:presto-plugin-toolkit:jar:0.285.1:test
+[INFO] |  |  +- com.facebook.presto:presto-thrift-api:jar:0.285.1:test
+[INFO] |  |  \- mysql:mysql-connector-java:jar:5.1.48:test
+[INFO] |  +- com.facebook.airlift.discovery:discovery-server:jar:1.33:test
+[INFO] |  |  +- com.facebook.airlift:jmx-http-rpc:jar:0.198:test
+[INFO] |  |  +- org.iq80.leveldb:leveldb-api:jar:0.10:test
+[INFO] |  |  +- org.iq80.leveldb:leveldb:jar:0.10:test
+[INFO] |  |  +- com.facebook.airlift:jaxrs:jar:0.207:test
+[INFO] |  |  |  +- javax.xml.bind:jaxb-api:jar:2.3.1:test
+[INFO] |  |  |  |  \- javax.activation:javax.activation-api:jar:1.2.0:test
+[INFO] |  |  |  +- org.glassfish.jersey.core:jersey-common:jar:2.26:test
+[INFO] |  |  |  |  \- org.glassfish.hk2:osgi-resource-locator:jar:1.0.1:test
+[INFO] |  |  |  +- org.glassfish.jersey.core:jersey-server:jar:2.26:test
+[INFO] |  |  |  |  +- org.glassfish.jersey.core:jersey-client:jar:2.26:test
+[INFO] |  |  |  |  \- org.glassfish.jersey.media:jersey-media-jaxb:jar:2.26:test
+[INFO] |  |  |  +- org.glassfish.jersey.containers:jersey-container-servlet-core:jar:2.26:test
+[INFO] |  |  |  +- org.glassfish.jersey.containers:jersey-container-servlet:jar:2.26:test
+[INFO] |  |  |  \- org.glassfish.jersey.inject:jersey-hk2:jar:2.26:test
+[INFO] |  |  |     \- org.glassfish.hk2:hk2-locator:jar:2.5.0-b42:test
+[INFO] |  |  |        +- org.glassfish.hk2:hk2-api:jar:2.5.0-b42:test
+[INFO] |  |  |        +- org.glassfish.hk2:hk2-utils:jar:2.5.0-b42:test
+[INFO] |  |  |        \- org.javassist:javassist:jar:3.22.0-GA:test
+[INFO] |  |  \- com.facebook.airlift:jmx:jar:0.207:test
+[INFO] |  |     \- com.sun:tools:jar:1.8:system
+[INFO] |  +- com.facebook.airlift:stats:jar:0.207:test
+[INFO] |  |  \- org.hdrhistogram:HdrHistogram:jar:2.1.9:test
+[INFO] |  +- io.airlift.tpch:tpch:jar:0.10:test
+[INFO] |  +- com.squareup.okhttp3:okhttp:jar:3.14.9:test
+[INFO] |  |  \- com.squareup.okio:okio:jar:1.17.2:test
+[INFO] |  +- joda-time:joda-time:jar:2.12.5:test
+[INFO] |  +- org.jdbi:jdbi3-core:jar:3.4.0:test
+[INFO] |  |  +- org.antlr:antlr-runtime:jar:3.4:test
+[INFO] |  |  |  +- org.antlr:stringtemplate:jar:3.2.1:test
+[INFO] |  |  |  \- antlr:antlr:jar:2.7.7:test
+[INFO] |  |  \- net.jodah:expiringmap:jar:0.5.6:test
+[INFO] |  +- org.jdbi:jdbi3-sqlobject:jar:3.4.0:test
+[INFO] |  +- org.apache.commons:commons-math3:jar:3.6.1:test
+[INFO] |  +- org.assertj:assertj-core:jar:3.8.0:test
+[INFO] |  +- com.h2database:h2:jar:1.4.199:test
+[INFO] |  +- com.facebook.airlift:http-client:jar:0.207:test
+[INFO] |  |  +- org.eclipse.jetty:jetty-client:jar:9.4.54.v20240208:test
+[INFO] |  |  +- org.eclipse.jetty:jetty-io:jar:9.4.54.v20240208:test
+[INFO] |  |  +- org.eclipse.jetty.http2:http2-client:jar:9.4.54.v20240208:test
+[INFO] |  |  |  \- org.eclipse.jetty:jetty-alpn-client:jar:9.4.54.v20240208:test
+[INFO] |  |  +- org.eclipse.jetty.http2:http2-http-client-transport:jar:9.4.54.v20240208:test
+[INFO] |  |  |  \- org.eclipse.jetty:jetty-alpn-openjdk8-client:jar:9.4.54.v20240208:test
+[INFO] |  |  \- com.facebook.drift:drift-protocol:jar:1.37:test
+[INFO] |  +- javax.ws.rs:javax.ws.rs-api:jar:2.1:test
+[INFO] |  +- com.facebook.drift:drift-codec:jar:1.37:test
+[INFO] |  |  +- io.airlift:parameternames:jar:1.3:test
+[INFO] |  |  \- com.facebook.airlift:bytecode:jar:1.3:test
+[INFO] |  |     +- org.ow2.asm:asm:jar:9.0:test
+[INFO] |  |     +- org.ow2.asm:asm-tree:jar:9.0:test
+[INFO] |  |     +- org.ow2.asm:asm-util:jar:9.0:test
+[INFO] |  |     \- org.ow2.asm:asm-analysis:jar:9.0:test
+[INFO] |  \- com.facebook.drift:drift-transport-netty:jar:1.37:test
+[INFO] |     +- io.netty:netty-common:jar:4.1.92.Final:test
+[INFO] |     +- io.netty:netty-buffer:jar:4.1.92.Final:test
+[INFO] |     +- io.netty:netty-handler-proxy:jar:4.1.92.Final:test
+[INFO] |     |  +- io.netty:netty-codec-socks:jar:4.1.92.Final:test
+[INFO] |     |  \- io.netty:netty-codec-http:jar:4.1.92.Final:test
+[INFO] |     +- io.netty:netty-handler:jar:4.1.92.Final:test
+[INFO] |     |  +- io.netty:netty-resolver:jar:4.1.92.Final:test
+[INFO] |     |  \- io.netty:netty-transport-native-unix-common:jar:4.1.92.Final:test
+[INFO] |     +- io.netty:netty-transport-classes-epoll:jar:4.1.92.Final:test
+[INFO] |     +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.92.Final:test
+[INFO] |     +- io.netty:netty-transport:jar:4.1.92.Final:test
+[INFO] |     \- io.netty:netty-codec:jar:4.1.92.Final:test
+[INFO] +- com.facebook.presto:presto-testng-services:jar:0.285.1:test
+[INFO] +- com.facebook.presto:presto-tpch:jar:0.285.1:test
+[INFO] +- com.facebook.presto:presto-main:test-jar:tests:0.285.1:test
+[INFO] +- com.facebook.presto:presto-main:jar:0.285.1:test
+[INFO] +- org.testng:testng:jar:7.5:test
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.32:runtime
+[INFO] |  +- com.beust:jcommander:jar:1.78:test
+[INFO] |  \- org.webjars:jquery:jar:3.5.1:test
+[INFO] +- com.facebook.airlift:testing:jar:0.207:test
+[INFO] +- com.facebook.airlift:http-server:jar:0.207:test
+[INFO] |  +- com.facebook.airlift:http-utils:jar:0.207.1:test
+[INFO] |  +- com.facebook.airlift:event:jar:0.207:test
+[INFO] |  +- com.facebook.airlift:trace-token:jar:0.207:test
+[INFO] |  +- com.facebook.airlift:discovery:jar:0.207:test
+[INFO] |  +- com.facebook.airlift:security:jar:0.207:test
+[INFO] |  +- org.eclipse.jetty:jetty-http:jar:9.4.54.v20240208:test
+[INFO] |  +- org.eclipse.jetty.http2:http2-server:jar:9.4.54.v20240208:test
+[INFO] |  |  \- org.eclipse.jetty.http2:http2-common:jar:9.4.54.v20240208:test
+[INFO] |  |     \- org.eclipse.jetty.http2:http2-hpack:jar:9.4.54.v20240208:test
+[INFO] |  +- org.eclipse.jetty:jetty-server:jar:9.4.54.v20240208:test
+[INFO] |  +- org.eclipse.jetty:jetty-util:jar:9.4.54.v20240208:test
+[INFO] |  +- org.eclipse.jetty:jetty-servlet:jar:9.4.54.v20240208:test
+[INFO] |  |  \- org.eclipse.jetty:jetty-util-ajax:jar:9.4.54.v20240208:test
+[INFO] |  +- org.eclipse.jetty:jetty-security:jar:9.4.54.v20240208:test
+[INFO] |  +- org.eclipse.jetty:jetty-jmx:jar:9.4.54.v20240208:test
+[INFO] |  \- ch.qos.logback:logback-core:jar:1.2.3:compile
+[INFO] +- com.facebook.airlift:node:jar:0.207:test
+[INFO] \- javax.servlet:javax.servlet-api:jar:3.1.0:compile
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  27.613 s
+[INFO] Finished at: 2024-09-22T11:49:45+03:00
+[INFO] ------------------------------------------------------------------------

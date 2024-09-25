@@ -147,7 +147,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.basepom.maven</groupId>
                 <artifactId>duplicate-finder-maven-plugin</artifactId>
@@ -158,6 +157,10 @@
                             <artifactId>jansi</artifactId>
                         </dependency>
                     </ignoredDependencies>
+                    <ignoredClassPatterns>
+                        <ignoredClassPattern>META-INF.versions.9.module-info</ignoredClassPattern>
+                        <ignoredClassPattern>module-info</ignoredClassPattern>
+                    </ignoredClassPatterns>
                 </configuration>
             </plugin>
 

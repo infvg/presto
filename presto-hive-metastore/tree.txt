@@ -1,0 +1,24 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------< com.facebook.presto:presto-hive-metastore >--------------
+[INFO] Building presto-hive-metastore 0.286
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] The POM for com.facebook.presto:presto-orc:jar:0.286 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+[WARNING] The POM for com.facebook.presto.hadoop:hadoop-apache2:jar:3.2.4-1.0 is missing, no dependency information available
+[WARNING] The POM for com.facebook.presto.hive:hive-apache-ibm:jar:4.0.0 is missing, no dependency information available
+[WARNING] The POM for com.facebook.presto:presto-govern:jar:0.286 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ presto-hive-metastore ---
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.449 s
+[INFO] Finished at: 2024-09-22T19:06:55+03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-dependency-plugin:3.1.1:tree (default-cli) on project presto-hive-metastore: Cannot build project dependency graph: Could not resolve nor collect following dependencies: [com.facebook.presto.hive:hive-apache-ibm:jar:4.0.0 (compile), com.facebook.presto.hadoop:hadoop-apache2:jar:3.2.4-1.0 (provided)]: Could not resolve dependencies for project com.facebook.presto:presto-hive-metastore:jar:0.286: The following artifacts could not be resolved: com.facebook.presto.hive:hive-apache-ibm:jar:4.0.0, com.facebook.presto.hadoop:hadoop-apache2:jar:3.2.4-1.0: Failure to find com.facebook.presto.hive:hive-apache-ibm:jar:4.0.0 in https://na.artifactory.swg-devops.com/artifactory/hyc-cpd-skywalker-team-lakehouse-on-prem-docker-local/airlift was cached in the local repository, resolution will not be reattempted until the update interval of airlift has elapsed or updates are forced -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

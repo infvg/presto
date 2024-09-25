@@ -1,0 +1,63 @@
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.facebook.presto:presto-plugin-toolkit:jar:0.285.1
+[WARNING] 'dependencyManagement.dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: com.facebook.presto:presto-singlestore:jar -> duplicate declaration of version ${project.version} @ com.facebook.presto:presto-root:0.285.1, /Users/hazmi/IdeaProjects/presto/pom.xml, line 448, column 25
+[WARNING] 'dependencyManagement.dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: com.facebook.presto:presto-jmx:jar -> duplicate declaration of version ${project.version} @ com.facebook.presto:presto-root:0.285.1, /Users/hazmi/IdeaProjects/presto/pom.xml, line 657, column 25
+[WARNING] 'dependencyManagement.dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: com.singlestore:singlestore-jdbc-client:jar -> duplicate declaration of version 1.1.9 @ com.facebook.presto:presto-root:0.285.1, /Users/hazmi/IdeaProjects/presto/pom.xml, line 1299, column 25
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] 
+[INFO] -------------< com.facebook.presto:presto-plugin-toolkit >--------------
+[INFO] Building presto-plugin-toolkit 0.285.1
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ presto-plugin-toolkit ---
+[INFO] com.facebook.presto:presto-plugin-toolkit:jar:0.285.1
+[INFO] +- com.google.guava:guava:jar:26.0-jre:compile
+[INFO] |  +- com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[INFO] |  +- org.checkerframework:checker-qual:jar:3.37.0:compile
+[INFO] |  +- com.google.errorprone:error_prone_annotations:jar:2.1.3:compile
+[INFO] |  +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- com.facebook.airlift:json:jar:0.207:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.15.0:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.15.0:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.15.0:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-joda:jar:2.15.0:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.15.0:compile
+[INFO] |  \- com.fasterxml.jackson.dataformat:jackson-dataformat-smile:jar:2.15.0:compile
+[INFO] +- com.facebook.airlift:configuration:jar:0.207:compile
+[INFO] |  +- org.apache.bval:bval-jsr:jar:2.0.0:compile
+[INFO] |  \- cglib:cglib-nodep:jar:3.2.5:compile
+[INFO] +- com.google.inject:guice:jar:4.2.2:compile
+[INFO] |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO] +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] +- javax.inject:javax.inject:jar:1:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-databind:jar:2.15.0:compile
+[INFO] +- com.facebook.airlift:log:jar:0.207:compile
+[INFO] +- io.airlift:units:jar:1.3:compile
+[INFO] +- com.facebook.presto:presto-spi:jar:0.285.1:compile
+[INFO] |  +- com.facebook.drift:drift-api:jar:1.37:compile
+[INFO] |  \- org.openjdk.jol:jol-core:jar:0.2:compile
+[INFO] +- com.facebook.presto:presto-common:jar:0.285.1:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.15.0:compile
+[INFO] +- io.airlift:slice:jar:0.38:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-core:jar:2.15.0:compile
+[INFO] +- com.facebook.presto:presto-testng-services:jar:0.285.1:test
+[INFO] |  \- com.facebook.airlift:concurrent:jar:0.207:test
+[INFO] +- org.testng:testng:jar:7.5:test
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.32:test
+[INFO] |  +- com.beust:jcommander:jar:1.78:test
+[INFO] |  \- org.webjars:jquery:jar:3.5.1:test
+[INFO] +- com.facebook.airlift:testing:jar:0.207:test
+[INFO] +- com.facebook.presto:presto-spi:test-jar:tests:0.285.1:test
+[INFO] \- org.assertj:assertj-core:jar:3.8.0:test
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.245 s
+[INFO] Finished at: 2024-09-24T22:17:01+03:00
+[INFO] ------------------------------------------------------------------------

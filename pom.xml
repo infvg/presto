@@ -76,7 +76,7 @@
         <dep.ratis.version>2.2.0</dep.ratis.version>
         <dep.errorprone.version>2.18.0</dep.errorprone.version>
         <dep.guava.version>32.1.0-jre</dep.guava.version>
-        <dep.jackson.version>2.11.0</dep.jackson.version>
+        <dep.jackson.version>2.14.2</dep.jackson.version>
         <dep.j2objc.version>2.8</dep.j2objc.version>
         <dep.avro.version>1.11.3</dep.avro.version>
         <dep.commons.compress.version>1.23.0</dep.commons.compress.version>
@@ -767,6 +767,26 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.module</groupId>
                 <artifactId>jackson-module-afterburner</artifactId>
+                <version>${dep.jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${dep.jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${dep.jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-smile</artifactId>
+                <version>${dep.jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-yaml</artifactId>
                 <version>${dep.jackson.version}</version>
             </dependency>
 
@@ -1703,13 +1723,25 @@
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
-                <version>4.5.5</version>
+                <version>4.5.14</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpasyncclient</artifactId>
+                <version>4.1.4</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpcore</artifactId>
-                <version>4.4.9</version>
+                <version>4.4.16</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore-nio</artifactId>
+                <version>4.4.12</version>
             </dependency>
 
             <dependency>
@@ -2057,7 +2089,7 @@
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-analyzers-common</artifactId>
-                <version>7.2.1</version>
+                <version>8.11.3</version>
                 <exclusions>
                     <exclusion>
                         <groupId>org.apache.lucene</groupId>
@@ -2350,6 +2382,8 @@
                                     <exclude>com.fasterxml.jackson.core:jackson-annotations</exclude>
                                     <exclude>com.fasterxml.jackson.core:jackson-core</exclude>
                                     <exclude>com.fasterxml.jackson.core:jackson-databind</exclude>
+                                    <exclude>com.fasterxml.jackson.dataformat:jackson-dataformat-smile</exclude>
+                                    <exclude>com.fasterxml.jackson.dataformat:jackson-dataformat-yaml</exclude>
                                 </excludes>
                             </requireUpperBoundDeps>
                         </rules>
