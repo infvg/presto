@@ -213,6 +213,19 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <configuration>
+                    <rules>
+                        <requireUpperBoundDeps>
+                            <excludes combine.children="append">
+                                <exclude>com.fasterxml.jackson.core:jackson-core</exclude>
+                            </excludes>
+                        </requireUpperBoundDeps>
+                    </rules>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.basepom.maven</groupId>
                 <artifactId>duplicate-finder-maven-plugin</artifactId>
                 <configuration>
