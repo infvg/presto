@@ -14,6 +14,7 @@
 package com.facebook.presto.elasticsearch;
 
 import com.amazonaws.util.Base64;
+import com.facebook.presto.elasticsearch.client.ElasticSearchClientUtils;
 import com.facebook.presto.sql.query.QueryAssertions;
 import com.facebook.presto.tests.DistributedQueryRunner;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -107,11 +108,12 @@ public class TestPasswordAuthentication
                 .put("value", 42L)
                 .build());
 
-        performRequest(
+        ElasticSearchClientUtils.performRequest(
                         "POST",
                         "/test/_doc?refresh",
                         ImmutableMap.of(),
                         new NStringEntity(json, ContentType.APPLICATION_JSON),
+                        client,
                         new BasicHeader("Authorization", format("Basic %s", Base64.encodeAsString(format("%s:%s", USER, PASSWORD).getBytes(StandardCharsets.UTF_8)))));
 
         assertions.assertQuery("SELECT * FROM test",

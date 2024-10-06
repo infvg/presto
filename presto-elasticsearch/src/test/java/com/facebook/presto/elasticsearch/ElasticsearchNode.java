@@ -16,6 +16,7 @@ package com.facebook.presto.elasticsearch;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.InternalSettingsPreparer;
 import org.elasticsearch.node.Node;
+
 public class ElasticsearchNode
         extends Node
 {
@@ -25,7 +26,5 @@ public class ElasticsearchNode
     }
 
     protected void registerDerivedNodeNameWithLogger(String s)
-    {
-        // Need to provide implementation for the abstract method if required
-    }
+    { }
 }
