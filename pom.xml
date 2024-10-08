@@ -104,6 +104,7 @@
         <module>presto-cache</module>
         <module>presto-jmx</module>
         <module>presto-record-decoder</module>
+        <module>presto-sybase</module>
         <module>presto-kafka</module>
         <module>presto-redis</module>
         <module>presto-accumulo</module>
