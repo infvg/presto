@@ -43,7 +43,6 @@ public class ElasticsearchConnectorTest
     private final String elasticsearchServer = "docker.elastic.co/elasticsearch/elasticsearch-oss:6.0.0";
     private ElasticsearchServer elasticsearch;
     private RestHighLevelClient client;
-    private ElasticSearchClientUtils elasticSearchClientUtils;
 
     @AfterClass(alwaysRun = true)
     public final void destroy()
@@ -159,7 +158,6 @@ public class ElasticsearchConnectorTest
         elasticsearch = new ElasticsearchServer(elasticsearchServer, ImmutableMap.of());
         HostAndPort address = elasticsearch.getAddress();
         client = new RestHighLevelClient(RestClient.builder(new HttpHost(address.getHost(), address.getPort())));
-        elasticSearchClientUtils = new ElasticSearchClientUtils();
 
         return createElasticsearchQueryRunner(elasticsearch.getAddress(),
                 TpchTable.getTables(),
@@ -221,6 +219,6 @@ public class ElasticsearchConnectorTest
     private void addAlias(String index, String alias)
             throws IOException
     {
-        elasticSearchClientUtils.performRequest("PUT", format("/%s/_alias/%s", index, alias), client);
+        ElasticSearchClientUtils.performRequest("PUT", format("/%s/_alias/%s", index, alias), client);
     }
 }

@@ -28,7 +28,6 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.support.WriteRequest;
-import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.intellij.lang.annotations.Language;
@@ -47,15 +46,15 @@ import static com.facebook.presto.testing.assertions.Assert.assertEquals;
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.elasticsearch.client.RequestOptions.DEFAULT;
 
 @Test(singleThreaded = true)
 public class TestElasticsearchIntegrationSmokeTest
         extends AbstractTestIntegrationSmokeTest
 {
-    private final String elasticsearchServer = "docker.elastic.co/elasticsearch/elasticsearch-oss:6.0.0";
+    private final String elasticsearchServer = "docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.23";
     private ElasticsearchServer elasticsearch;
     private RestHighLevelClient client;
-    private ElasticSearchClientUtils elasticSearchClientUtils;
 
     @Override
     protected QueryRunner createQueryRunner()
@@ -65,7 +64,6 @@ public class TestElasticsearchIntegrationSmokeTest
 
         HostAndPort address = elasticsearch.getAddress();
         client = new RestHighLevelClient(RestClient.builder(new HttpHost(address.getHost(), address.getPort())));
-        elasticSearchClientUtils = new ElasticSearchClientUtils();
 
         return createElasticsearchQueryRunner(elasticsearch.getAddress(),
                 TpchTable.getTables(),
@@ -758,7 +756,7 @@ public class TestElasticsearchIntegrationSmokeTest
     {
         client.index(new IndexRequest(index, "doc")
                 .source(document)
-                .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE), RequestOptions.DEFAULT);
+                .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE), DEFAULT);
     }
 
     @Test
@@ -792,18 +790,31 @@ public class TestElasticsearchIntegrationSmokeTest
     private void addAlias(String index, String alias)
             throws IOException
     {
-        elasticSearchClientUtils.performRequest("PUT", format("/%s/_alias/%s", index, alias), client);
+        ElasticSearchClientUtils.performRequest("PUT", format("/%s/_alias/%s", index, alias), client);
     }
 
     private void removeAlias(String index, String alias)
             throws IOException
     {
-        elasticSearchClientUtils.performRequest("DELETE", format("/%s/_alias/%s", index, alias), client);
+        ElasticSearchClientUtils.performRequest("DELETE", format("/%s/_alias/%s", index, alias), client);
     }
 
     private void createIndex(String indexName, @Language("JSON") String mapping)
             throws IOException
     {
-        elasticSearchClientUtils.performRequest("PUT", "/" + indexName, ImmutableMap.of(), new NStringEntity(mapping, ContentType.APPLICATION_JSON), client);
+        ElasticSearchClientUtils.performRequest("PUT", "/" + indexName, ImmutableMap.of(), new NStringEntity(mapping, ContentType.APPLICATION_JSON), client);
+    }
+
+    @Test
+    public void testEmptyIndexNoMappings()
+            throws IOException
+    {
+        ElasticSearchClientUtils.performRequest("PUT", "/emptyindex", client);
+        try {
+            computeActual("SELECT * FROM emptyindex");
+        }
+        catch (Exception e) {
+            assertEquals(e.getMessage(), "SELECT * not allowed from relation that has no columns");
+        }
     }
 }

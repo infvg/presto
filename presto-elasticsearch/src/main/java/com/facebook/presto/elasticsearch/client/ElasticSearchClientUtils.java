@@ -33,30 +33,33 @@ import java.util.Map;
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static java.util.Arrays.stream;
 import static java.util.Objects.requireNonNull;
+import static org.elasticsearch.client.RequestOptions.DEFAULT;
 
 public class ElasticSearchClientUtils
 {
-    public void setHosts(RestHighLevelClient client, HttpHost... hosts)
+    private ElasticSearchClientUtils() {}
+
+    public static void setHosts(RestHighLevelClient client, HttpHost... hosts)
     {
         client.getLowLevelClient().setNodes(stream(hosts)
                 .map(Node::new)
                 .collect(toImmutableList()));
     }
 
-    public Response performRequest(String method, String endpoint, RestHighLevelClient client, Header... headers)
+    public static Response performRequest(String method, String endpoint, RestHighLevelClient client, Header... headers)
             throws IOException
     {
         return client.getLowLevelClient().performRequest(toRequest(method, endpoint, headers));
     }
-    public Response performRequest(String method, String endpoint, Map<String, String> params, HttpEntity entity, RestHighLevelClient client, Header... headers)
+    public static Response performRequest(String method, String endpoint, Map<String, String> params, HttpEntity entity, RestHighLevelClient client, Header... headers)
             throws IOException
     {
         return client.getLowLevelClient().performRequest(toRequest(method, endpoint, params, entity, headers));
     }
     public static Request toRequest(String method, String endpoint, Map<String, String> params, HttpEntity entity, Header... headers)
     {
-        Request request = toRequest(method, endpoint, headers);
         requireNonNull(params, "parameters cannot be null");
+        Request request = toRequest(method, endpoint, headers);
         for (Map.Entry<String, String> entry : params.entrySet()) {
             request.addParameter(entry.getKey(), entry.getValue());
         }
@@ -76,21 +79,21 @@ public class ElasticSearchClientUtils
         return request;
     }
 
-    public SearchResponse search(SearchRequest searchRequest, RestHighLevelClient client)
+    public static SearchResponse search(SearchRequest searchRequest, RestHighLevelClient client)
             throws IOException
     {
-        return client.search(searchRequest, RequestOptions.DEFAULT);
+        return client.search(searchRequest, DEFAULT);
     }
 
-    public SearchResponse searchScroll(SearchScrollRequest searchScrollRequest, RestHighLevelClient client)
+    public static SearchResponse searchScroll(SearchScrollRequest searchScrollRequest, RestHighLevelClient client)
             throws IOException
     {
-        return client.scroll(searchScrollRequest, RequestOptions.DEFAULT);
+        return client.scroll(searchScrollRequest, DEFAULT);
     }
 
-    public ClearScrollResponse clearScroll(ClearScrollRequest clearScrollRequest, RestHighLevelClient client)
+    public static ClearScrollResponse clearScroll(ClearScrollRequest clearScrollRequest, RestHighLevelClient client)
             throws IOException
     {
-        return client.clearScroll(clearScrollRequest, RequestOptions.DEFAULT);
+        return client.clearScroll(clearScrollRequest, DEFAULT);
     }
 }

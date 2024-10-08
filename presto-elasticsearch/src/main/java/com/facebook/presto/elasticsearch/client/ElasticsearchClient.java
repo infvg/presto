@@ -133,8 +133,6 @@ public class ElasticsearchClient
     private final boolean tlsEnabled;
     private final boolean ignorePublishAddress;
 
-    private final ElasticSearchClientUtils elasticSearchClientUtils = new ElasticSearchClientUtils();
-
     @Inject
     public ElasticsearchClient(
             ElasticsearchConfig config,
@@ -182,7 +180,7 @@ public class ElasticsearchClient
                     .toArray(HttpHost[]::new);
 
             if (hosts.length > 0 && !ignorePublishAddress) {
-                elasticSearchClientUtils.setHosts(client, hosts);
+                ElasticSearchClientUtils.setHosts(client, hosts);
             }
             this.nodes.set(nodes);
         }
@@ -566,7 +564,7 @@ public class ElasticsearchClient
 
         Response response;
         try {
-            response = elasticSearchClientUtils.performRequest(
+            response = ElasticSearchClientUtils.performRequest(
                             "GET",
                             path,
                             ImmutableMap.of(),
@@ -615,7 +613,7 @@ public class ElasticsearchClient
                 .source(sourceBuilder);
 
         try {
-            return elasticSearchClientUtils.search(request, client);
+            return ElasticSearchClientUtils.search(request, client);
         }
         catch (IOException e) {
             throw new PrestoException(ELASTICSEARCH_CONNECTION_ERROR, e);
@@ -652,7 +650,7 @@ public class ElasticsearchClient
                 .scroll(new TimeValue(scrollTimeout.toMillis()));
 
         try {
-            return elasticSearchClientUtils.searchScroll(request, client);
+            return ElasticSearchClientUtils.searchScroll(request, client);
         }
         catch (IOException e) {
             throw new PrestoException(ELASTICSEARCH_CONNECTION_ERROR, e);
@@ -668,7 +666,7 @@ public class ElasticsearchClient
 
         Response response;
         try {
-            response = elasticSearchClientUtils.performRequest(
+            response = ElasticSearchClientUtils.performRequest(
                             "GET",
                             format("/%s/_count?preference=_shards:%s", index, shard),
                             ImmutableMap.of(),
@@ -697,7 +695,7 @@ public class ElasticsearchClient
         ClearScrollRequest request = new ClearScrollRequest();
         request.addScrollId(scrollId);
         try {
-            elasticSearchClientUtils.clearScroll(request, client);
+            ElasticSearchClientUtils.clearScroll(request, client);
         }
         catch (IOException e) {
             throw new PrestoException(ELASTICSEARCH_CONNECTION_ERROR, e);
@@ -710,7 +708,7 @@ public class ElasticsearchClient
 
         Response response;
         try {
-            response = elasticSearchClientUtils.performRequest("GET", path, client);
+            response = ElasticSearchClientUtils.performRequest("GET", path, client);
         }
         catch (IOException e) {
             throw new PrestoException(ELASTICSEARCH_CONNECTION_ERROR, e);

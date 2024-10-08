@@ -50,8 +50,6 @@ public class TestPasswordAuthentication
     private final RestHighLevelClient client;
     private final QueryAssertions assertions;
 
-    private final ElasticSearchClientUtils elasticSearchClientUtils;
-
     public TestPasswordAuthentication()
             throws Exception
     {
@@ -64,8 +62,6 @@ public class TestPasswordAuthentication
 
         HostAndPort address = elasticsearch.getAddress();
         client = new RestHighLevelClient(RestClient.builder(new HttpHost(address.getHost(), address.getPort())));
-
-        elasticSearchClientUtils = new ElasticSearchClientUtils();
 
         DistributedQueryRunner runner = createElasticsearchQueryRunner(
                 elasticsearch.getAddress(),
@@ -97,7 +93,7 @@ public class TestPasswordAuthentication
                 .put("value", 42L)
                 .build());
 
-        elasticSearchClientUtils.performRequest(
+        ElasticSearchClientUtils.performRequest(
                         "POST",
                         "/test/_doc?refresh",
                         ImmutableMap.of(),
