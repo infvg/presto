@@ -12,7 +12,9 @@
 # limitations under the License.
 
 # Propagate errors and improve debugging.
-set -eufx -o pipefail
+# set -eufx -o pipefail
+set -e
+set -x
 
 JWT_VERSION="v0.6.0"
 PROMETHEUS_VERSION="v1.2.4"

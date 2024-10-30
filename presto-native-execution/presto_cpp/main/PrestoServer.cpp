@@ -30,6 +30,7 @@
 #include "presto_cpp/main/connectors/SystemConnector.h"
 #include "presto_cpp/main/connectors/hive/functions/HiveFunctionRegistration.h"
 #include "presto_cpp/main/functions/FunctionMetadata.h"
+#include "presto_cpp/main/governance/wkc_functions/QaagFunctionsRegistration.h"
 #include "presto_cpp/main/http/HttpConstants.h"
 #include "presto_cpp/main/http/filters/AccessLogFilter.h"
 #include "presto_cpp/main/http/filters/HttpEndpointLatencyFilter.h"
@@ -1369,6 +1370,9 @@ void PrestoServer::registerFunctions() {
   velox::aggregate::prestosql::registerAllAggregateFunctions(
       prestoBuiltinFunctionPrefix_);
   velox::window::prestosql::registerAllWindowFunctions(
+      prestoBuiltinFunctionPrefix_);
+      
+  facebook::presto::governance::registerQaagFunctions(
       prestoBuiltinFunctionPrefix_);
 
   if (velox::connector::hasConnector(
