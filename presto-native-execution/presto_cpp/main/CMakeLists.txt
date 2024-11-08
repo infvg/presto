@@ -187,3 +187,9 @@ if(PRESTO_MEMORY_CHECKER_TYPE)
     message(FATAL_ERROR "${PRESTO_MEMORY_CHECKER_TYPE} is not a valid memory checker name")
   endif()
 endif()
+
+# Check if the current platform is Linux.
+if(UNIX AND NOT APPLE)
+  add_subdirectory(common/process)
+  target_link_libraries(presto_server ibm_signal_handler)
+endif()

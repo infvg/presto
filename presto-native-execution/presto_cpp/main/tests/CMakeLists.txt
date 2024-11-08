@@ -63,6 +63,10 @@ target_link_libraries(
   GTest::gtest_main
 )
 
+if(UNIX AND NOT APPLE)
+  target_link_libraries(presto_server_test ibm_signal_handler)
+endif()
+
 # Clang requires explicit linking with libatomic.
 if(
   "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang"
