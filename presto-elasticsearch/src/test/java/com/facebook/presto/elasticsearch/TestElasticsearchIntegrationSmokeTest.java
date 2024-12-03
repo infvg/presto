@@ -724,8 +724,8 @@ public class TestElasticsearchIntegrationSmokeTest
     @Test
     public void testQueryStringError()
     {
-        assertQueryFails("SELECT orderkey FROM \"orders: ++foo AND\"", "\\QFailed to parse query [ ++foo AND]\\E");
-        assertQueryFails("SELECT count(*) FROM \"orders: ++foo AND\"", "\\QFailed to parse query [ ++foo AND]\\E");
+        assertQueryFails("SELECT orderkey FROM \"orders: ++foo AND\"", "\\QFailed to parse query [ ++foo and]\\E");
+        assertQueryFails("SELECT count(*) FROM \"orders: ++foo AND\"", "\\QFailed to parse query [ ++foo and]\\E");
     }
 
     @Test
@@ -812,11 +812,6 @@ public class TestElasticsearchIntegrationSmokeTest
             throws IOException
     {
         elasticSearchClientUtils.performRequest("PUT", "/emptyindex", client);
-        try {
-            computeActual("SELECT * FROM emptyindex");
-        }
-        catch (Exception e) {
-            assertEquals(e.getMessage(), "SELECT * not allowed from relation that has no columns");
-        }
+        assertQueryFails("SELECT * FROM emptyindex", "line 1:8: SELECT \\* not allowed from relation that has no columns");
     }
 }
