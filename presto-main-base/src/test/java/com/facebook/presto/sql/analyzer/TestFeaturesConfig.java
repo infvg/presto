@@ -270,6 +270,8 @@ public class TestFeaturesConfig
                 .setAddExchangeBelowPartialAggregationOverGroupId(false)
                 .setAddDistinctBelowSemiJoinBuild(false)
                 .setPushdownSubfieldForMapFunctions(true)
+                .setRestrictCatalogEndpointsLocally(true)
+                .setAddExchangeBelowPartialAggregationOverGroupId(false)
                 .setUtilizeUniquePropertyInQueryPlanning(true)
                 .setInnerJoinPushdownEnabled(false)
                 .setBroadcastSemiJoinForDelete(true)
@@ -503,6 +505,7 @@ public class TestFeaturesConfig
                 .put("optimizer.utilize-unique-property-in-query-planning", "false")
                 .put("optimizer.add-exchange-below-partial-aggregation-over-group-id", "true")
                 .put("max_serializable_object_size", "50")
+                .put("restrict-catalog-endpoints-locally", "false")
                 .put("use-connector-provided-serialization-codecs", "true")
                 .build();
 
@@ -716,6 +719,8 @@ public class TestFeaturesConfig
                 .setEnhancedCTESchedulingEnabled(false)
                 .setExpressionOptimizerName("custom")
                 .setExcludeInvalidWorkerSessionProperties(true)
+                .setAddExchangeBelowPartialAggregationOverGroupId(true)
+                .setRestrictCatalogEndpointsLocally(false)
                 .setAddExchangeBelowPartialAggregationOverGroupId(true)
                 .setAddDistinctBelowSemiJoinBuild(true)
                 .setPushdownSubfieldForMapFunctions(false)
