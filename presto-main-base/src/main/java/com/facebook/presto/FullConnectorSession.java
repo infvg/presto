@@ -271,6 +271,12 @@ public class FullConnectorSession
     }
 
     @Override
+    public Optional<String> getCatalog()
+    {
+        return Optional.of(catalog);
+    }
+
+    @Override
     public Optional<ConnectorId> getConnectorId()
     {
         return Optional.ofNullable(connectorId);

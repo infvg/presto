@@ -59,6 +59,11 @@ public interface ConnectorSession
 
     Optional<String> getSchema();
 
+    default Optional<String> getCatalog()
+    {
+        return Optional.empty();
+    };
+
     default boolean isReadConstraints()
     {
         return false;
