@@ -34,6 +34,12 @@
                 <artifactId>jakarta.xml.bind-api</artifactId>
                 <version>4.0.2</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.apache.helix</groupId>
+                <artifactId>helix-core</artifactId>
+                <version>1.4.3</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
