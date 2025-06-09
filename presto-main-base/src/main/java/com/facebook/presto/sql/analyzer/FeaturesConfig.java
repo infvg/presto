@@ -78,6 +78,7 @@ public class FeaturesConfig
     private static final String SINGLE_STREAM_SPILLER_CHOICE = "experimental.spiller.single-stream-spiller-choice";
 
     private boolean queryRewriterPluginEnabled;
+    private boolean sizeBasedJoinFlippingEnabled = true;
     private double cpuCostWeight = 75;
     private double memoryCostWeight = 10;
     private double networkCostWeight = 15;
@@ -502,6 +503,19 @@ public class FeaturesConfig
     {
         DISABLED,
         ALWAYS_ENABLED
+    }
+
+    @Config("optimizer.size-based-join-flipping-enabled")
+    @ConfigDescription("flip join sides when determining join distribution type based on estimated statistics")
+    public FeaturesConfig setSizeBasedJoinFlippingEnabled(boolean enabled)
+    {
+        this.sizeBasedJoinFlippingEnabled = enabled;
+        return this;
+    }
+
+    public boolean isSizeBasedJoinFlippingEnabled()
+    {
+        return sizeBasedJoinFlippingEnabled;
     }
 
     @Min(1)
