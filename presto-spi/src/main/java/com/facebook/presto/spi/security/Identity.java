@@ -102,6 +102,9 @@ public class Identity
 
     public String getUser()
     {
+        if (principal != null && principal.isPresent()) {
+            return principal.get().getName();
+        }
         return user;
     }
 
