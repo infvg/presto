@@ -195,6 +195,7 @@ public class MetastoreUtil
     public static final String PRESTO_VIEW_COMMENT = "Presto View";
     public static final String PRESTO_VERSION_NAME = "presto_version";
     public static final String PRESTO_VIEW_EXPANDED_TEXT_MARKER = "/* Presto View */";
+    public static final String CATALOG = "catalog";
 
     private MetastoreUtil()
     {

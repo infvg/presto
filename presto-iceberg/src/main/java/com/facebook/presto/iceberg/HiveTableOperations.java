@@ -74,6 +74,7 @@ import static com.facebook.presto.hive.metastore.HivePrivilegeInfo.HivePrivilege
 import static com.facebook.presto.hive.metastore.HivePrivilegeInfo.HivePrivilege.INSERT;
 import static com.facebook.presto.hive.metastore.HivePrivilegeInfo.HivePrivilege.SELECT;
 import static com.facebook.presto.hive.metastore.HivePrivilegeInfo.HivePrivilege.UPDATE;
+import static com.facebook.presto.hive.metastore.MetastoreUtil.CATALOG;
 import static com.facebook.presto.hive.metastore.MetastoreUtil.TABLE_COMMENT;
 import static com.facebook.presto.hive.metastore.MetastoreUtil.isPrestoView;
 import static com.facebook.presto.iceberg.HiveTableOperations.CommitStatus.FAILED;
@@ -288,12 +289,17 @@ public class HiveTableOperations
                 }
                 if (base == null) {
                     String tableComment = metadata.properties().get(TABLE_COMMENT);
+                    String catalog = metadata.properties().get(CATALOG);
                     Map<String, String> parameters = new HashMap<>();
                     parameters.put("EXTERNAL", "TRUE");
                     parameters.put(TABLE_TYPE_PROP, ICEBERG_TABLE_TYPE_VALUE);
                     parameters.put(METADATA_LOCATION, newMetadataLocation);
                     if (tableComment != null) {
                         parameters.put(TABLE_COMMENT, tableComment);
+                    }
+                    if (catalog != null) {
+                        // Presto Catalog Name for OPT+
+                        parameters.put(CATALOG, catalog);
                     }
                     Table.Builder builder = Table.builder()
                             .setDatabaseName(database)

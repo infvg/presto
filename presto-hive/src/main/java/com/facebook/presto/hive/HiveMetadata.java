@@ -302,6 +302,7 @@ import static com.facebook.presto.hive.PartitionUpdate.UpdateMode.OVERWRITE;
 import static com.facebook.presto.hive.SchemaProperties.getDatabaseProperties;
 import static com.facebook.presto.hive.metastore.HivePrivilegeInfo.toHivePrivilege;
 import static com.facebook.presto.hive.metastore.MetastoreUtil.AVRO_SCHEMA_URL_KEY;
+import static com.facebook.presto.hive.metastore.MetastoreUtil.CATALOG;
 import static com.facebook.presto.hive.metastore.MetastoreUtil.PRESTO_MATERIALIZED_VIEW_FLAG;
 import static com.facebook.presto.hive.metastore.MetastoreUtil.PRESTO_QUERY_ID_NAME;
 import static com.facebook.presto.hive.metastore.MetastoreUtil.PRESTO_VERSION_NAME;
@@ -1313,6 +1314,11 @@ public class HiveMetadata
 
         // Table comment property
         tableMetadata.getComment().ifPresent(value -> tableProperties.put(TABLE_COMMENT, value));
+
+        // Presto Catalog Name for OPT+
+        hdfsContext.getSession().ifPresent(connectorSession -> {
+            tableProperties.put(CATALOG, connectorSession.getCatalog().orElse(null));
+        });
 
         // Encryption specific settings
         tableProperties.putAll(tableEncryptionProperties.map(TableEncryptionProperties::toHiveProperties).orElseGet(ImmutableMap::of));
