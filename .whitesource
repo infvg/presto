@@ -1,5 +1,13 @@
 {
   "settingsInheritedFrom": "whitesource-config/whitesource-config@master",
+  "remediateSettings": {
+    "workflowRules": {
+      "enabled": true
+    },
+    "leastVulnerablePackageSettings": {
+      "enabled": true
+    }
+  },
   "scanSettings": {
     "baseBranches": [
       "master",
