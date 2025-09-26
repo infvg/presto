@@ -13,17 +13,19 @@
  */
 package com.facebook.presto.elasticsearch;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.core.IndexRequest;
+import co.elastic.clients.elasticsearch.core.IndexResponse;
+import co.elastic.clients.json.jackson.JacksonJsonpMapper;
+import co.elastic.clients.transport.rest5_client.Rest5ClientTransport;
+import co.elastic.clients.transport.rest5_client.low_level.Rest5Client;
 import com.facebook.presto.testing.MaterializedResult;
 import com.facebook.presto.testing.QueryRunner;
 import com.facebook.presto.tests.AbstractTestQueryFramework;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HostAndPort;
 import io.airlift.tpch.TpchTable;
-import org.apache.http.HttpHost;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.support.WriteRequest;
-import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestHighLevelClient;
+import org.apache.hc.core5.http.HttpHost;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
@@ -34,7 +36,6 @@ import static com.facebook.presto.common.type.VarcharType.VARCHAR;
 import static com.facebook.presto.elasticsearch.ElasticsearchQueryRunner.createElasticsearchQueryRunner;
 import static com.facebook.presto.testing.MaterializedResult.resultBuilder;
 import static com.facebook.presto.tests.QueryAssertions.assertContains;
-import static org.elasticsearch.client.RequestOptions.DEFAULT;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -42,21 +43,29 @@ import static org.testng.Assert.assertTrue;
 public class TestElasticsearchMixedCaseTest
         extends AbstractTestQueryFramework
 {
-    private final String elasticsearchServer = "docker.elastic.co/elasticsearch/elasticsearch:7.17.27";
+    private final String elasticsearchServer = "docker.elastic.co/elasticsearch/elasticsearch:9.1.0";
     private ElasticsearchServer elasticsearch;
-    private RestHighLevelClient client;
+    private ElasticsearchClient client;
+    private Rest5Client restClient;
+
     @Override
     protected QueryRunner createQueryRunner()
             throws Exception
     {
-        elasticsearch = new ElasticsearchServer(elasticsearchServer, ImmutableMap.of());
+        elasticsearch = new ElasticsearchServer(elasticsearchServer, ImmutableMap.of(), ImmutableMap.of(
+                "xpack.security.enabled", "false"));
         HostAndPort address = elasticsearch.getAddress();
-        client = new RestHighLevelClient(RestClient.builder(new HttpHost(address.getHost(), address.getPort())));
 
-        return createElasticsearchQueryRunner(elasticsearch.getAddress(),
+        restClient = Rest5Client.builder(new HttpHost(address.getHost(), address.getPort())).build();
+        client = new ElasticsearchClient(new Rest5ClientTransport(restClient, new JacksonJsonpMapper()));
+
+        return createElasticsearchQueryRunner(
+                elasticsearch.getAddress(),
                 TpchTable.getTables(),
                 ImmutableMap.of(),
-                ImmutableMap.of("case-sensitive-name-matching", "true", "elasticsearch.default-schema-name", "MySchema"));
+                ImmutableMap.of(
+                        "case-sensitive-name-matching", "true",
+                        "elasticsearch.default-schema-name", "MySchema"));
     }
 
     @AfterClass(alwaysRun = true)
@@ -64,14 +73,21 @@ public class TestElasticsearchMixedCaseTest
             throws IOException
     {
         elasticsearch.stop();
-        client.close();
+        restClient.close();
     }
+
     private void index(String index, Map<String, Object> document)
             throws IOException
     {
-        client.index(new IndexRequest(index, "_doc")
-                .source(document)
-                .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE), DEFAULT);
+        IndexRequest<Map<String, Object>> request = new IndexRequest.Builder<Map<String, Object>>()
+                .index(index)
+                .document(document)
+                .refresh(co.elastic.clients.elasticsearch._types.Refresh.True)
+                .build();
+
+        IndexResponse response = client.index(request);
+        assertTrue(response.result().jsonValue().matches("created|updated"),
+                "Unexpected index result: " + response.result());
     }
 
     @Test
