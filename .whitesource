@@ -43,7 +43,9 @@
       "otel_externalized",
       "0.288-wb-feature",
       "open-lineage-event",
-      "druid-upgrade-security-fix"
+      "druid-upgrade-security-fix",
+      "wxd-fedramp-baseline",
+      "oss-baseline"
     ],
     "configMode": "LOCAL"
   },
