@@ -13,6 +13,7 @@
  */
 
 import React, { Suspense, lazy } from "react";
+import './timeout'
 
 const LazyComponent = (filename: string) => {
     const Component = lazy(() => import(`./components/${filename}`));

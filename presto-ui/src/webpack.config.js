@@ -109,6 +109,7 @@ module.exports = (env) => {
             timeline: "./timeline.jsx",
             res_groups: "./res_groups.jsx",
             sql_client: "./sql_client.jsx",
+            logout: "./logout.js",
             "dev/query_viewer": "./query_viewer.jsx",
             ...baseConfig.entry,
         },

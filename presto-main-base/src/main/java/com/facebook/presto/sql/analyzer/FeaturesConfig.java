@@ -79,6 +79,7 @@ public class FeaturesConfig
 
     private boolean queryRewriterPluginEnabled;
     private boolean sizeBasedJoinFlippingEnabled = true;
+    private Duration uiTimeout = new Duration(0, SECONDS); // disabled by default
     private double cpuCostWeight = 75;
     private double memoryCostWeight = 10;
     private double networkCostWeight = 15;
@@ -516,6 +517,19 @@ public class FeaturesConfig
     public boolean isSizeBasedJoinFlippingEnabled()
     {
         return sizeBasedJoinFlippingEnabled;
+    }
+
+    public Duration getUITimeout()
+    {
+        return uiTimeout;
+    }
+
+    @Config("ui-timeout")
+    @ConfigDescription("Set the UI timeout duration. A duration of 0 implies no timeout.")
+    public FeaturesConfig setUITimeout(Duration timeout)
+    {
+        this.uiTimeout = timeout;
+        return this;
     }
 
     @Min(1)

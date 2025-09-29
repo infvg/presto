@@ -162,6 +162,10 @@ public class CoordinatorModule
         webUIBinder(binder, "/ui", "webapp").withWelcomeFile("index.html");
         webUIBinder(binder, "/tableau", "webapp/tableau");
 
+        // UI timeout
+        jaxrsBinder(binder).bind(UITimeoutResource.class);
+        jsonCodecBinder(binder).bindJsonCodec(UITimeoutResource.TimeoutDto.class);
+
         // discovery server
         install(installModuleIf(EmbeddedDiscoveryConfig.class, EmbeddedDiscoveryConfig::isEnabled, new EmbeddedDiscoveryModule()));
 
