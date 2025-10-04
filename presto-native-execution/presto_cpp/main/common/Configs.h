@@ -746,6 +746,9 @@ class SystemConfig : public ConfigBase {
   static constexpr std::string_view kExchangeMaxBufferSize{
       "exchange.max-buffer-size"};
 
+  static constexpr std::string_view kExchangeChecksumEnabled{
+      "exchange.checksum-enabled"};
+
   /// The maximum timeslice for a task on thread if there are threads queued.
   static constexpr std::string_view kTaskRunTimeSliceMicros{
       "task-run-timeslice-micros"};
@@ -855,6 +858,7 @@ class SystemConfig : public ConfigBase {
   /// Enable BigintEnum and VarcharEnum types to be parsed and used in Velox.
   /// When set to false, BigintEnum or VarcharEnum types will throw an
   ///  unsupported error during type parsing.
+
   static constexpr std::string_view kEnumTypesEnabled{"enum-types-enabled"};
 
   SystemConfig();
@@ -960,6 +964,8 @@ class SystemConfig : public ConfigBase {
   double exchangeHttpClientNumIoThreadsHwMultiplier() const;
 
   double exchangeHttpClientNumCpuThreadsHwMultiplier() const;
+
+  bool exchangeChecksumEnabled() const;
 
   double connectorNumCpuThreadsHwMultiplier() const;
 

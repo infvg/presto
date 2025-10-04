@@ -88,6 +88,7 @@ public class NativeWorkerSessionPropertyProvider
     public static final String NATIVE_INDEX_LOOKUP_JOIN_SPLIT_OUTPUT = "native_index_lookup_join_split_output";
     public static final String NATIVE_UNNEST_SPLIT_OUTPUT = "native_unnest_split_output";
     public static final String NATIVE_USE_VELOX_GEOSPATIAL_JOIN = "native_use_velox_geospatial_join";
+    public static final String NATIVE_EXCHANGE_CHECKSUM = "native_exchange_checksum";
 
     private final List<PropertyMetadata<?>> sessionProperties;
 
@@ -432,6 +433,11 @@ public class NativeWorkerSessionPropertyProvider
                                 "velox::core::SpatialJoinNode. Otherwise, it is converted to a " +
                                 "velox::core::NestedLoopJoinNode.",
                         true,
+                        !nativeExecution),
+                booleanProperty(
+                        NATIVE_EXCHANGE_CHECKSUM,
+                        "Enable exchange checksum",
+                        featuresConfig.isExchangeChecksumEnabled(),
                         !nativeExecution));
     }
 

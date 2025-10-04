@@ -378,6 +378,9 @@ class SessionProperties {
   static constexpr const char* kUseVeloxGeospatialJoin =
       "native_use_velox_geospatial_join";
 
+  static constexpr const char* kExchangeChecksum =
+      "native_exchange_checksum";
+
   inline bool hasVeloxConfig(const std::string& key) {
     auto sessionProperty = sessionProperties_.find(key);
     if (sessionProperty == sessionProperties_.end()) {

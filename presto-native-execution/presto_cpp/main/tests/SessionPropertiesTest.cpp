@@ -127,7 +127,10 @@ TEST_F(SessionPropertiesTest, validateMapping) {
       {SessionProperties::kUnnestSplitOutput,
        core::QueryConfig::kUnnestSplitOutput},
       {SessionProperties::kUseVeloxGeospatialJoin,
-       SessionProperties::kUseVeloxGeospatialJoin}};
+       SessionProperties::kUseVeloxGeospatialJoin},
+      {SessionProperties::kExchangeChecksum,
+       core::QueryConfig::kExchangeChecksum}};
+
 
   const auto sessionProperties = SessionProperties::instance();
   for (const auto& [sessionProperty, expectedVeloxConfig] : expectedMappings) {

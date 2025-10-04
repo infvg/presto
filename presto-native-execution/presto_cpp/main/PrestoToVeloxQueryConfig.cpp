@@ -67,6 +67,8 @@ void updateFromSessionConfigs(
           velox::common::compressionKindToString(compressionKind);
     } else if (!sessionProperties->hasVeloxConfig(it.first)) {
       sessionProperties->updateSessionPropertyValue(it.first, it.second);
+    } else if (it.first == SessionProperties::kExchangeChecksum) {
+      queryConfigs[velox::core::QueryConfig::kExchangeChecksum] = it.second;
     } else {
       queryConfigs[sessionProperties->toVeloxConfig(it.first)] = it.second;
     }
@@ -192,12 +194,17 @@ void updateFromSystemConfigs(
              return folly::to<std::string>(velox::config::toCapacity(
                  value, velox::config::CapacityUnit::BYTE));
            }},
+
+      {.prestoSystemConfig =
+           std::string(SystemConfig::kExchangeChecksumEnabled),
+       .veloxConfig = velox::core::QueryConfig::kExchangeChecksum},
   };
 
   for (const auto& configMapping : veloxToPrestoConfigMapping) {
     const auto& veloxConfigName = configMapping.veloxConfig;
     const auto& systemConfigName = configMapping.prestoSystemConfig;
     const auto propertyOpt = systemConfig->optionalProperty(systemConfigName);
+
     if (propertyOpt.has_value()) {
       queryConfigs[veloxConfigName] =
           configMapping.toVeloxPropertyValueConverter(propertyOpt.value());
@@ -232,6 +239,7 @@ velox::core::QueryConfig toVeloxConfigs(
     // Create new config map with all extra credentials added
     configs.insert(extraCredentials.begin(), extraCredentials.end());
   }
+
   return velox::core::QueryConfig(configs);
 }
 

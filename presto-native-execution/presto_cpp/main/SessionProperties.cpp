@@ -586,6 +586,14 @@ SessionProperties::SessionProperties() {
       false,
       std::nullopt,
       "true");
+
+  addSessionProperty(
+      kExchangeChecksum,
+      "kExchangeChecksum",
+      BOOLEAN(),
+      false,
+      QueryConfig::kExchangeChecksum,
+      boolToString(c.isExchangeChecksumEnabled()));
 }
 
 const std::string SessionProperties::toVeloxConfig(
