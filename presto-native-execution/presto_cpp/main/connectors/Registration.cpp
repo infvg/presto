@@ -80,6 +80,8 @@ void registerConnectors() {
   registerPrestoToVeloxConnector(
       std::make_unique<ArrowPrestoToVeloxConnector>(
           ArrowFlightConnectorFactory::kArrowFlightConnectorName));
+  registerPrestoToVeloxConnector(
+      std::make_unique<ArrowPrestoToVeloxConnector>("gfs"));
 #endif
 }
 
@@ -134,6 +136,8 @@ void registerConnectorFactories() {
   // namespace For now, keep the Velox version
   facebook::presto::registerConnectorFactory(
       std::make_shared<ArrowFlightConnectorFactory>());
+  facebook::presto::registerConnectorFactory(
+        std::make_shared<ArrowFlightConnectorFactory>("gfs"));
 #endif
 }
 
