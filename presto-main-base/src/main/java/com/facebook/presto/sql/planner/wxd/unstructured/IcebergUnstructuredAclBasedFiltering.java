@@ -221,17 +221,7 @@ public class IcebergUnstructuredAclBasedFiltering
             Set<String> groupSet = new HashSet<>();
             groupSet.add(session.getUser());
             groupSet.add("__all_wxd_users");
-            try {
-                Set<String> cpgGroupList = cpgClient.getGroupDetails(bearerToken);
-                if (cpgGroupList != null) {
-                    groupSet.addAll(cpgGroupList);
-                    log.debug("Group list is not empty ");
-                }
-            }
-            catch (Exception e) {
-                log.error(e, "Exception occurred while fetching group details");
-            }
-            log.info("group List :: %s", groupSet.toString());
+            log.debug("group List :: %s", groupSet.toString());
             PlanNode filteringSource = new FilterNode(
                     aclTableScanNode.getSourceLocation(),
                     idAllocator.getNextId(),

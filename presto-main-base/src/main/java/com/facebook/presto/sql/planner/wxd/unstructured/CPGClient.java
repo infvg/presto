@@ -16,6 +16,7 @@ package com.facebook.presto.sql.planner.wxd.unstructured;
 import com.facebook.airlift.log.Logger;
 import com.facebook.presto.common.QualifiedObjectName;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.cache.CacheBuilder;
@@ -24,9 +25,9 @@ import com.google.common.cache.LoadingCache;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -34,32 +35,44 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import static java.lang.String.format;
 
 public class CPGClient
 {
     private static final Logger log = Logger.get(CPGClient.class);
     private static final String LH_INSTANCE_ID_CPD = "LH_INSTANCE_ID";
-    private static final String CPG_URL = "CPG_URL";
+    private static final String MDS_REST_URL = "MDS_REST_URL";
     private static final String LH_INSTANCE_ID_SAAS = "ID";
-    private static final String LH_CONTEXT = "LH_CONTEXT";
+    private static final String LH_INSTANCE_SECRET = "LH_INSTANCE_SECRET";
+    private static final String ACL_STORAGE_API = "/lakehouse/api/v3/acl_storage";
     private static String baseUrl;
     private final LoadingCache<String, QualifiedObjectName> aclTableCache;
     private final LoadingCache<String, Boolean> isUnstructuredTableCache;
     private final LoadingCache<String, HashSet<String>> groupDetailsCache;
     private final OkHttpClient httpClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final String lhInstanceSecret;
+    private final String lhInstanceId;
+    private final String lhContext;
 
     public CPGClient()
     {
+        this.lhContext = System.getenv("LH_CONTEXT");
+        this.lhInstanceSecret = getLhInstanceSecret();
+        this.lhInstanceId = isSwContext(lhContext)
+                        ? System.getenv(LH_INSTANCE_ID_CPD)
+                        : System.getenv(LH_INSTANCE_ID_SAAS);
+
         this.httpClient = new OkHttpClient();
         this.aclTableCache = CacheBuilder.newBuilder()
                 .maximumSize(5000)
                 .expireAfterWrite(1, TimeUnit.HOURS)
-                .build(new CacheLoader<String, QualifiedObjectName>()
-                {
+                .build(new CacheLoader<String, QualifiedObjectName>() {
                     @Override
                     public QualifiedObjectName load(String bearerToken)
                     {
@@ -75,8 +88,7 @@ public class CPGClient
         this.isUnstructuredTableCache = CacheBuilder.newBuilder()
                 .maximumSize(5000)
                 .expireAfterWrite(1, TimeUnit.HOURS)
-                .build(new CacheLoader<String, Boolean>()
-                {
+                .build(new CacheLoader<String, Boolean>() {
                     @Override
                     public Boolean load(String cacheKey)
                     {
@@ -92,11 +104,9 @@ public class CPGClient
         this.groupDetailsCache = CacheBuilder.newBuilder()
                 .maximumSize(5000)
                 .expireAfterWrite(1, TimeUnit.HOURS)
-                .build(new CacheLoader<String, HashSet<String>>()
-                {
+                .build(new CacheLoader<String, HashSet<String>>() {
                     @Override
-                    public HashSet<String> load(String bearerToken)
-                            throws Exception
+                    public HashSet<String> load(String bearerToken) throws Exception
                     {
                         Set<String> result = fetchGroupDetailsFromRemote(bearerToken);
                         return new HashSet<>(result);
@@ -140,29 +150,70 @@ public class CPGClient
 
     private QualifiedObjectName fetchAclFromRemote(String bearerToken)
     {
-        String apiEndpoint = getBaseUrl() + "/v1/access/acls";
-        Request request = addRequestHeaders(new Request.Builder().url(apiEndpoint), bearerToken)
+        log.debug("Starting to fetch ACL remote details...");
+
+        String consoleUrl = System.getenv("CONSOLE_API_URL");
+        if (consoleUrl == null || consoleUrl.isEmpty()) {
+            log.error("CRITICAL: The CONSOLE_API_URL environment variable is not set or is empty.");
+            throw new RuntimeException("CONSOLE_API_URL environment variable is not set or is empty");
+        }
+        log.debug("Using base console URL: %s", consoleUrl);
+
+        String apiEndpoint = String.format("%s%s", consoleUrl, ACL_STORAGE_API);
+        log.debug("Constructed API endpoint for ACL storage: %s", apiEndpoint);
+        log.debug("Using LhInstanceId: %s", lhInstanceId);
+
+        Request request = new Request.Builder()
+                .url(apiEndpoint)
+                .addHeader("secret", lhInstanceSecret)
+                .addHeader("LhInstanceId", lhInstanceId)
                 .build();
+        log.debug("Built request for %s with required headers.", apiEndpoint);
+
+        // Execute the API call
         try (Response response = httpClient.newCall(request).execute()) {
+            ResponseBody body = response.body();
+            if (body == null) {
+                throw new RuntimeException("Response body is null for request: " + apiEndpoint);
+            }
+            String responseBody = response.body().string();
+            log.debug("Received response from API with status code: %d", response.code());
+            log.debug("Full response body: %s", responseBody);
+            String aclCatalogName;
+
             if (response.isSuccessful()) {
-                AclTableNameResponseDto aclTableNameResponseDto = objectMapper.readValue(response.body().string(), AclTableNameResponseDto.class);
-                String aclTable = aclTableNameResponseDto.getAclTableName();
-                if (aclTable == null) {
-                    throw new RuntimeException("The CPG call to get ACL table returned null");
+                log.debug("Response was successful. Proceeding to parse the body.");
+                AclCatalogResponseDto responseDto = objectMapper.readValue(responseBody, AclCatalogResponseDto.class);
+                aclCatalogName = extractFirstCatalogName(responseDto);
+
+                if (aclCatalogName == null || aclCatalogName.isEmpty()) {
+                    log.error("API response was successful, but the ACL catalog name was null or empty in the response body.");
+                    throw new RuntimeException("ACL catalog name is missing in API response");
                 }
-                String[] tableNames = aclTable.split("\\.");
-                if (tableNames.length != 3) {
-                    throw new RuntimeException(String.format("Invalid ACL table format '%s'. Expected format: <catalog>.<schema>.<table>", aclTable));
+                log.debug("Successfully extracted ACL Catalog Name: '%s'", aclCatalogName);
+
+                String schema = System.getenv("ACL_SCHEMA");
+                String table = System.getenv("ACL_TABLE");
+
+                if (schema == null || table == null) {
+                    log.error("CRITICAL: The ACL_SCHEMA or ACL_TABLE environment variable is missing.");
+                    throw new RuntimeException("ACL schema/table name is null/empty");
                 }
-                return new QualifiedObjectName(tableNames[0], tableNames[1], tableNames[2]);
+                log.debug("Using ACL_SCHEMA='%s' and ACL_TABLE='%s' from environment.", schema, table);
+
+                //  Build and return the final object
+                QualifiedObjectName finalObjectName = new QualifiedObjectName(aclCatalogName, schema, table);
+                log.debug("Successfully constructed QualifiedObjectName: %s", finalObjectName);
+                return finalObjectName;
             }
             else {
-                throw new RuntimeException(String.format("Request failed with code : %s", Integer.toString(response.code())));
+                log.error("Request failed with code: %d. The response body contains details.", response.code());
+                throw new RuntimeException(format("Failed to fetch ACL catalog from API. HTTP status: %d", response.code()));
             }
         }
         catch (IOException ex) {
-            log.error(ex, "CPG call to /v1/access/acls failed ");
-            throw new RuntimeException("Error calling/parsing CPG /v1/access/acls API", ex);
+            log.error(ex, "Console call to %s failed", ACL_STORAGE_API);
+            throw new RuntimeException("Failed to fetch ACL catalog", ex);
         }
     }
 
@@ -172,38 +223,48 @@ public class CPGClient
         if (parts.length != 2) {
             throw new IllegalArgumentException("Invalid cache key format");
         }
-        String bearerToken = parts[0];
         String qualifiedTableName = parts[1];
-        String encodedTableName = null;
+        List<String> encodedParts;
         try {
-            encodedTableName = URLEncoder.encode(qualifiedTableName, StandardCharsets.UTF_8.toString());
+            encodedParts = Arrays.stream(qualifiedTableName.split("\\."))
+                    .map(part -> URLEncoder.encode(part, StandardCharsets.UTF_8))
+                    .collect(Collectors.toList());
         }
-        catch (UnsupportedEncodingException e) {
+        catch (Exception e) {
             log.error(e, "Table name encoding failed");
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error encoding table name", e);
         }
-        String apiEndpoint = getBaseUrl() + "/v1/access/unstructured_objects?objectType=iceberg_table&objectId=" + encodedTableName;
-        Request request = addRequestHeaders(new Request.Builder().url(apiEndpoint), bearerToken)
+        String baseUrl = getBaseUrl();
+        String endPoint = format(
+                "/mds/metadata/v1/catalogs/%s/schemas/%s/tables/%s/properties/unstructured_flag",
+                encodedParts.get(0), encodedParts.get(1), encodedParts.get(2));
+        String apiEndpoint = format("%s%s", baseUrl, endPoint);
+        Request request = new Request.Builder().url(apiEndpoint)
+                .addHeader("secret", lhInstanceSecret)
                 .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
             if (response.isSuccessful()) {
                 UnstructuredTableResponseDto unstructuredTableResponseDto = objectMapper.readValue(response.body().string(), UnstructuredTableResponseDto.class);
+                log.debug("Secret:: " + lhInstanceSecret);
+                log.debug("Is unstructured flag :: " + unstructuredTableResponseDto.toString());
                 return unstructuredTableResponseDto.isUnstructured();
             }
             else {
+                log.debug("For API endpoint [%s]. response received [%d]. IsUnstructured flag checkf failed returning false", apiEndpoint, response.code());
+
                 return false;
             }
         }
         catch (IOException ex) {
-            log.error(ex, "CPG call to /v1/access/unstructured_objects failed for table");
+            log.error(ex, "MDS call to /mds/metadata/v1/catalogs failed for table %s", qualifiedTableName);
             return false;
         }
     }
 
     private Set<String> fetchGroupDetailsFromRemote(String bearerToken)
     {
-        String apiEndpoint = getBaseUrl() + "/v1/access/user_groups";
+        String apiEndpoint = format("%s/v1/access/user_groups", getBaseUrl());
         Request request = addRequestHeaders(new Request.Builder().url(apiEndpoint), bearerToken)
                 .build();
 
@@ -224,14 +285,6 @@ public class CPGClient
 
     public Request.Builder addRequestHeaders(Request.Builder builder, String bearerToken)
     {
-        String lhContext = System.getenv(LH_CONTEXT);
-        String lhInstanceId;
-        if ("sw_dev".equals(lhContext) || "sw_ent".equals(lhContext) || "sw_env".equals(lhContext)) {
-            lhInstanceId = System.getenv(LH_INSTANCE_ID_CPD);
-        }
-        else {
-            lhInstanceId = System.getenv(LH_INSTANCE_ID_SAAS);
-        }
         log.debug("cpglogs:lhInstanceId = %s", lhInstanceId);
         return builder
                 .addHeader("Authorization", "Bearer " + bearerToken)
@@ -239,64 +292,115 @@ public class CPGClient
                 .addHeader("Content-Type", "application/json");
     }
 
-    public static String getBaseUrl()
+    public String getBaseUrl()
     {
-        String lhContext = System.getenv(LH_CONTEXT);
-        String cpgEnvUrl = System.getenv(CPG_URL);
-        if ("sw_dev".equals(lhContext) || "sw_ent".equals(lhContext) || "sw_env".equals(lhContext)) {
-            baseUrl = cpgEnvUrl;
+        String mdsUrl = System.getenv(MDS_REST_URL);
+        if (isSwContext(lhContext)) {
+            baseUrl = mdsUrl;
         }
         else {
-            String filePath = "/conf/configmap/CPG_HTTPS_URL";
             try {
-                baseUrl = Files.readString(Paths.get(filePath)).trim();
+                baseUrl = Files.readString(Paths.get(mdsUrl)).trim();
                 if (baseUrl.isEmpty()) {
-                    baseUrl = "https://" + cpgEnvUrl;
+                    baseUrl = mdsUrl;
                 }
             }
             catch (Exception e) {
                 log.error(e, "Error reading the config file");
-                baseUrl = "https://" + cpgEnvUrl;
+                baseUrl = mdsUrl;
             }
         }
         return baseUrl;
     }
 
-    private static class AclTableNameResponseDto
+    public String getLhInstanceSecret()
     {
-        private final String aclTableName;
+        String lhInstanceSecret = System.getenv(LH_INSTANCE_SECRET);
+        String lHinstanceSecretSaaS;
+        if (isSwContext(lhContext)) {
+            return lhInstanceSecret;
+        }
+        else {
+            try {
+                lHinstanceSecretSaaS = Files.readString(Paths.get(lhInstanceSecret)).trim();
+                if (lHinstanceSecretSaaS.isEmpty()) {
+                    lHinstanceSecretSaaS = lhInstanceSecret;
+                }
+            }
+            catch (Exception e) {
+                log.error(e, "Error reading the config file");
+                lHinstanceSecretSaaS = lhInstanceSecret;
+            }
+        }
+        return lHinstanceSecretSaaS;
+    }
+    private String extractFirstCatalogName(AclCatalogResponseDto dto)
+    {
+        log.debug("Attempting to extract the first catalog name from the response DTO...");
 
-        @JsonCreator
-        public AclTableNameResponseDto(
-                @JsonProperty("table") String aclTableName)
-        {
-            this.aclTableName = aclTableName;
+        if (dto == null || dto.getAssociatedCatalogs() == null || dto.getAssociatedCatalogs().isEmpty()) {
+            log.warn("The 'associated_catalogs' list was null or empty. No catalog name to extract.");
+            return null;
         }
 
-        @JsonProperty
-        public String getAclTableName()
-        {
-            return aclTableName;
+        List<AclCatalogResponseDto.AssociatedCatalog> associatedCatalogs = dto.getAssociatedCatalogs();
+        log.debug("Found {} associated catalog(s).", associatedCatalogs.size());
+        log.debug("Catalogs: {}", associatedCatalogs);
+
+        AclCatalogResponseDto.AssociatedCatalog firstCatalog = associatedCatalogs.get(0);
+        if (firstCatalog == null) {
+            log.warn("The first item in the associated_catalogs list is null.");
+            return null;
         }
 
-        @Override
-        public String toString()
+        String catalogName = firstCatalog.getCatalogName();
+        log.debug("Extracted catalog name: '{}'", catalogName);
+        return catalogName;
+    }
+
+    private static boolean isSwContext(String context)
+    {
+        return "sw_dev".equals(context) || "sw_ent".equals(context) || "sw_env".equals(context);
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private static class AclCatalogResponseDto
+    {
+        @JsonProperty("associated_catalogs")
+        private List<AssociatedCatalog> associatedCatalogs;
+
+        @JsonIgnoreProperties(ignoreUnknown = true)
+        private static class AssociatedCatalog
         {
-            return "AclTableNameResponseDto{ " +
-                    ", aclTableName=" + aclTableName +
-                    '}';
+            @JsonProperty("catalog_name")
+            private String catalogName;
+
+            public String getCatalogName()
+            {
+                return catalogName;
+            }
+        }
+
+        public List<AssociatedCatalog> getAssociatedCatalogs()
+        {
+            return associatedCatalogs;
+        }
+
+        public void setAssociatedCatalogs(List<AssociatedCatalog> associatedCatalogs)
+        {
+            this.associatedCatalogs = associatedCatalogs;
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     private static class UnstructuredTableResponseDto
     {
         private final boolean isUnstructured;
 
         @JsonCreator
-        public UnstructuredTableResponseDto(
-                @JsonProperty("apply") boolean isUnstructured)
+        public UnstructuredTableResponseDto(@JsonProperty("data") String data)
         {
-            this.isUnstructured = isUnstructured;
+            this.isUnstructured = Boolean.parseBoolean(data);
         }
 
         @JsonProperty
@@ -319,8 +423,7 @@ public class CPGClient
         private final String groupList;
 
         @JsonCreator
-        public GroupListResponseDto(
-                @JsonProperty("user_groups") String groupList)
+        public GroupListResponseDto(@JsonProperty("user_groups") String groupList)
         {
             this.groupList = groupList;
         }
