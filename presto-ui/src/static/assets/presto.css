@@ -862,7 +862,15 @@ pre {
 }
 
 .clusters rect {
-    fill: #e0e0e0;
+    fill: #2b2b2b;
+}
+
+#live-plan-container .cluster rect {
+    fill: #1a4629;
+}
+
+#live-plan-container .cluster:nth-child(odd) rect {
+    fill: #858959;
 }
 
 .node .stage-stats rect {

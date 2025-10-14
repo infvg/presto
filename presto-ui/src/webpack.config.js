@@ -6,12 +6,67 @@ const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlInlineScriptPlugin = require("html-inline-script-webpack-plugin");
 
+// echo "presto-ui" | base64
+const generateNonce = () => "cHJlc3RvLXVpCg==";
+
+// Custom plugin to add nonce to style tags in HTML files
+class AddNonceToStyleTagsPlugin {
+    constructor(options = {}) {
+        this.nonce = options.nonce || generateNonce();
+        this.mode = options.mode || 'production';
+    }
+
+    apply(compiler) {
+        compiler.hooks.compilation.tap('AddNonceToStyleTagsPlugin', (compilation) => {
+            // Use the processAssets hook from the Compilation.hooks
+            compilation.hooks.processAssets.tap(
+                {
+                    name: 'AddNonceToStyleTagsPlugin',
+                    stage: compilation.PROCESS_ASSETS_STAGE_OPTIMIZE,
+                },
+                (assets) => {
+                    // Process each asset
+                    Object.keys(assets).forEach(filename => {
+                        if (filename.endsWith('.html')) {
+                            const asset = assets[filename];
+                            // Get the source as a string
+                            let content = asset.source().toString();
+
+                            // Add nonce to all <link> tags with rel="stylesheet"
+                            content = content.replace(
+                                /<link([^>]*) rel=["']stylesheet["']([^>]*)>/g,
+                                `<link$1 rel="stylesheet" nonce="${this.nonce}"$2>`
+                            );
+
+                            // Add nonce to all <style> tags
+                            content = content.replace(
+                                /<style([^>]*)>/g,
+                                `<style$1 nonce="${this.nonce}">`
+                            );
+
+                            // Add Content-Security-Policy meta tag if not already present
+                            if (this.mode != 'production' && !content.includes('Content-Security-Policy')) {
+                                const cspTag = `<meta http-equiv="Content-Security-Policy" content="style-src 'self' 'nonce-${this.nonce}' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;">`;
+                                content = content.replace('</head>', `    ${cspTag}\n</head>`);
+                            }
+
+                            // Update the asset with the modified content
+                            compilation.updateAsset(filename, new compiler.webpack.sources.RawSource(content));
+                        }
+                    });
+                }
+            );
+        });
+    }
+}
+
 module.exports = (env) => {
     const mode = env.production ? "production" : "development";
     const apiHost = env.apiHost || "localhost";
     const apiPort = env.apiPort || "8080";
     const outputDir = "target/webapp";
     const routerOutputDir = "target/webapp-router";
+    const nonce = generateNonce();
     const baseConfig = {
         entry: {
             css_loader: path.join(__dirname, "static", "vendor", "css-loaders", "loader.css"),
@@ -25,6 +80,7 @@ module.exports = (env) => {
             new CopyPlugin({
                 patterns: [{ from: "static", to: path.join(__dirname, "..", outputDir) }],
             }),
+            new AddNonceToStyleTagsPlugin({ nonce, mode }),
         ],
         mode,
         module: {
