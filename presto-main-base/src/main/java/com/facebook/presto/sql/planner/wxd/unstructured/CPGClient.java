@@ -48,6 +48,7 @@ public class CPGClient
     private static final String LH_INSTANCE_ID_CPD = "LH_INSTANCE_ID";
     private static final String MDS_REST_URL = "MDS_REST_URL";
     private static final String LH_INSTANCE_ID_SAAS = "ID";
+    private static final String LH_INSTANCE_ID_LITE = "REAL_INSTANCE_ID";
     private static final String LH_INSTANCE_SECRET = "LH_INSTANCE_SECRET";
     private static final String ACL_STORAGE_API = "/lakehouse/api/v3/acl_storage";
     private static String baseUrl;
@@ -64,10 +65,7 @@ public class CPGClient
     {
         this.lhContext = System.getenv("LH_CONTEXT");
         this.lhInstanceSecret = getLhInstanceSecret();
-        this.lhInstanceId = isSwContext(lhContext)
-                        ? System.getenv(LH_INSTANCE_ID_CPD)
-                        : System.getenv(LH_INSTANCE_ID_SAAS);
-
+        this.lhInstanceId = getLhInstanceId(lhContext);
         this.httpClient = new OkHttpClient();
         this.aclTableCache = CacheBuilder.newBuilder()
                 .maximumSize(5000)
@@ -312,7 +310,21 @@ public class CPGClient
         }
         return baseUrl;
     }
-
+    public String getLhInstanceId(String lhContext)
+    {
+        if (isSwContext(lhContext)) {
+            return System.getenv(LH_INSTANCE_ID_CPD);
+        }
+        else {
+            String instanceId = System.getenv(LH_INSTANCE_ID_LITE);
+            if (instanceId != null && !instanceId.isEmpty()) {
+                return instanceId;
+            }
+            else {
+                return System.getenv(LH_INSTANCE_ID_SAAS);
+            }
+        }
+    }
     public String getLhInstanceSecret()
     {
         String lhInstanceSecret = System.getenv(LH_INSTANCE_SECRET);
