@@ -26,6 +26,7 @@ import com.facebook.airlift.http.server.RequestStats;
 import com.facebook.airlift.http.server.TheAdminServlet;
 import com.facebook.airlift.http.server.TheServlet;
 import com.facebook.presto.server.security.AuthenticationFilter;
+import com.facebook.presto.server.security.CommonSecurityHeadersFilter;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -69,6 +70,8 @@ public class HttpServerModule
         binder.bind(AnnouncementHttpServerInfo.class).to(LocalAnnouncementHttpServerInfo.class).in(Scopes.SINGLETON);
         newSetBinder(binder, Filter.class, TheServlet.class).addBinding()
                 .to(AuthenticationFilter.class).in(Scopes.SINGLETON);
+        newSetBinder(binder, Filter.class, TheServlet.class).addBinding()
+                .to(CommonSecurityHeadersFilter.class).in(Scopes.SINGLETON);
     }
 
     @Provides
