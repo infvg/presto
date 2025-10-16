@@ -70,7 +70,8 @@ public class CPGClient
         this.aclTableCache = CacheBuilder.newBuilder()
                 .maximumSize(5000)
                 .expireAfterWrite(1, TimeUnit.HOURS)
-                .build(new CacheLoader<String, QualifiedObjectName>() {
+                .build(new CacheLoader<String, QualifiedObjectName>()
+                {
                     @Override
                     public QualifiedObjectName load(String bearerToken)
                     {
@@ -86,7 +87,8 @@ public class CPGClient
         this.isUnstructuredTableCache = CacheBuilder.newBuilder()
                 .maximumSize(5000)
                 .expireAfterWrite(1, TimeUnit.HOURS)
-                .build(new CacheLoader<String, Boolean>() {
+                .build(new CacheLoader<String, Boolean>()
+                {
                     @Override
                     public Boolean load(String cacheKey)
                     {
@@ -102,9 +104,11 @@ public class CPGClient
         this.groupDetailsCache = CacheBuilder.newBuilder()
                 .maximumSize(5000)
                 .expireAfterWrite(1, TimeUnit.HOURS)
-                .build(new CacheLoader<String, HashSet<String>>() {
+                .build(new CacheLoader<String, HashSet<String>>()
+                {
                     @Override
-                    public HashSet<String> load(String bearerToken) throws Exception
+                    public HashSet<String> load(String bearerToken)
+                            throws Exception
                     {
                         Set<String> result = fetchGroupDetailsFromRemote(bearerToken);
                         return new HashSet<>(result);
@@ -310,21 +314,19 @@ public class CPGClient
         }
         return baseUrl;
     }
+
     public String getLhInstanceId(String lhContext)
     {
         if (isSwContext(lhContext)) {
             return System.getenv(LH_INSTANCE_ID_CPD);
         }
-        else {
-            String instanceId = System.getenv(LH_INSTANCE_ID_LITE);
-            if (instanceId != null && !instanceId.isEmpty()) {
-                return instanceId;
-            }
-            else {
-                return System.getenv(LH_INSTANCE_ID_SAAS);
-            }
+        String instanceId = System.getenv(LH_INSTANCE_ID_LITE);
+        if (instanceId != null && !instanceId.isEmpty()) {
+            return instanceId;
         }
+        return System.getenv(LH_INSTANCE_ID_SAAS);
     }
+
     public String getLhInstanceSecret()
     {
         String lhInstanceSecret = System.getenv(LH_INSTANCE_SECRET);
@@ -346,6 +348,7 @@ public class CPGClient
         }
         return lHinstanceSecretSaaS;
     }
+
     private String extractFirstCatalogName(AclCatalogResponseDto dto)
     {
         log.debug("Attempting to extract the first catalog name from the response DTO...");
