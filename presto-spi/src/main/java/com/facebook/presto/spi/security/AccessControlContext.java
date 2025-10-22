@@ -36,6 +36,7 @@ public class AccessControlContext
     private final Optional<String> catalog;
     private final Optional<String> schema;
     private final Optional<String> sqlText;
+    private Optional<QueryType> innerQueryType;
 
     public AccessControlContext(
             QueryId queryId,
@@ -82,6 +83,7 @@ public class AccessControlContext
         this.catalog = requireNonNull(catalog, "catalog is null");
         this.schema = requireNonNull(schema, "schema is null");
         this.sqlText = requireNonNull(sqlText, "sqlText is null");
+        this.innerQueryType = Optional.empty();
     }
 
     public QueryId getQueryId()
@@ -116,7 +118,25 @@ public class AccessControlContext
 
     public Optional<QueryType> getQueryType()
     {
+        if (innerQueryType.isPresent()) {
+            return innerQueryType;
+        }
         return queryType;
+    }
+
+    public Optional<QueryType> getParentQueryType()
+    {
+        return queryType;
+    }
+
+    public Optional<QueryType> getInnerQueryType()
+    {
+        return innerQueryType;
+    }
+
+    public void setInnerQueryType(Optional<QueryType> queryType)
+    {
+        this.innerQueryType = queryType;
     }
 
     public Optional<String> getCatalog()
@@ -157,6 +177,7 @@ public class AccessControlContext
                 Objects.equals(this.queryType, other.queryType) &&
                 Objects.equals(this.catalog, other.catalog) &&
                 Objects.equals(this.schema, other.schema) &&
-                Objects.equals(this.sqlText, other.sqlText);
+                Objects.equals(this.sqlText, other.sqlText) &&
+                Objects.equals(this.innerQueryType, other.innerQueryType);
     }
 }

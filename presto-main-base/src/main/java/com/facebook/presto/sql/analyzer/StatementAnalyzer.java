@@ -22,6 +22,7 @@ import com.facebook.presto.common.Subfield;
 import com.facebook.presto.common.function.OperatorType;
 import com.facebook.presto.common.predicate.Domain;
 import com.facebook.presto.common.predicate.TupleDomain;
+import com.facebook.presto.common.resourceGroups.QueryType;
 import com.facebook.presto.common.type.ArrayType;
 import com.facebook.presto.common.type.BigintType;
 import com.facebook.presto.common.type.DoubleType;
@@ -76,6 +77,7 @@ import com.facebook.presto.spi.procedure.TableDataRewriteDistributedProcedure;
 import com.facebook.presto.spi.relation.DomainTranslator;
 import com.facebook.presto.spi.relation.RowExpression;
 import com.facebook.presto.spi.security.AccessControl;
+import com.facebook.presto.spi.security.AccessControlContext;
 import com.facebook.presto.spi.security.AllowAllAccessControl;
 import com.facebook.presto.spi.security.Identity;
 import com.facebook.presto.spi.security.ViewAccessControl;
@@ -504,7 +506,15 @@ class StatementAnalyzer
             }
 
             // analyze the query that creates the data
-            Scope queryScope = process(insert.getQuery(), scope);
+            Scope queryScope;
+            Optional<QueryType> previousInnerQueryType = session.getAccessControlContext().getInnerQueryType();
+            try {
+                new CheckSelectQueryType().process(insert.getQuery(), session.getAccessControlContext());
+                queryScope = process(insert.getQuery(), scope);
+            }
+            finally {
+                session.getAccessControlContext().setInnerQueryType(previousInnerQueryType);
+            }
 
             analysis.setUpdateInfo(insert.getUpdateInfo());
 
@@ -800,7 +810,15 @@ class StatementAnalyzer
             analysis.setCreateTableAsSelectWithData(node.isWithData());
 
             // analyze the query that creates the table
-            Scope queryScope = process(node.getQuery(), scope);
+            Scope queryScope;
+            Optional<QueryType> previousInnerQueryType = session.getAccessControlContext().getInnerQueryType();
+            try {
+                new CheckSelectQueryType().process(node.getQuery(), session.getAccessControlContext());
+                queryScope = process(node.getQuery(), scope);
+            }
+            finally {
+                session.getAccessControlContext().setInnerQueryType(previousInnerQueryType);
+            }
 
             ImmutableList.Builder<OutputColumnMetadata> outputColumns = ImmutableList.builder();
 
@@ -4296,7 +4314,15 @@ class StatementAnalyzer
                 Session viewSession = createViewSession(catalog, schema, identity);
 
                 StatementAnalyzer analyzer = new StatementAnalyzer(analysis, metadata, sqlParser, viewAccessControl, viewSession, warningCollector);
-                Scope queryScope = analyzer.analyze(query, Scope.create());
+                Scope queryScope;
+                Optional<QueryType> previousInnerQueryType = viewSession.getAccessControlContext().getInnerQueryType();
+                try {
+                    new CheckSelectQueryType().process(query, viewSession.getAccessControlContext());
+                    queryScope = analyzer.analyze(query, Scope.create());
+                }
+                finally {
+                    viewSession.getAccessControlContext().setInnerQueryType(previousInnerQueryType);
+                }
                 return queryScope.getRelationType().withAlias(name.getObjectName(), null);
             }
             catch (RuntimeException e) {
@@ -4714,6 +4740,18 @@ class StatementAnalyzer
         public List<TableArgumentAnalysis> getTableArgumentAnalyses()
         {
             return tableArgumentAnalyses;
+        }
+    }
+
+    private static class CheckSelectQueryType
+            extends DefaultTraversalVisitor<Void, AccessControlContext>
+    {
+        @Override
+        protected Void visitSelect(Select node, AccessControlContext context)
+        {
+            context.setInnerQueryType(Optional.of(QueryType.SELECT));
+            super.visitSelect(node, context);
+            return null;
         }
     }
 }
