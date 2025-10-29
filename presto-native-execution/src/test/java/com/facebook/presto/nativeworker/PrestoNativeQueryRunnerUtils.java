@@ -463,6 +463,42 @@ public class PrestoNativeQueryRunnerUtils
         }
     }
 
+    /**
+     * Generates an example C file with do_decrypt_string (reverses input string).
+     */
+    public static Path compileDecryptLibrary(Path temp) throws IOException, InterruptedException
+    {
+        Path cFile = temp.resolve("decrypt.c");
+        String cCode = "#include <string.h>\n"
+                + "#include <stdio.h>\n\n"
+                + "int do_decrypt_string(char* ciphertext_b64, char* plaintext) {\n"
+                + "    if (ciphertext_b64 == NULL || plaintext == NULL) {\n"
+                + "        return -1;\n"
+                + "    }\n"
+                + "    size_t len = strlen(ciphertext_b64);\n"
+                + "    for (size_t i = 0; i < len; i++) {\n"
+                + "        plaintext[i] = ciphertext_b64[len - 1 - i];\n"
+                + "    }\n"
+                + "    plaintext[len] = '\\0';\n"
+                + "    return len;\n"
+                + "}\n";
+        Files.writeString(cFile, cCode);
+
+        Path soFile = temp.resolve("libdecrypt.so");
+        Process compile = new ProcessBuilder(
+                "gcc", "-fPIC", "-shared",
+                "-o", soFile.toString(),
+                cFile.toString()
+        ).inheritIO().start();
+
+        int exitCode = compile.waitFor();
+        if (exitCode != 0) {
+            throw new RuntimeException("C compilation failed");
+        }
+
+        return soFile;
+    }
+
     public static NativeQueryRunnerParameters getNativeQueryRunnerParameters()
     {
         Path prestoServerPath = Paths.get(getProperty("PRESTO_SERVER")
@@ -603,13 +639,40 @@ public class PrestoNativeQueryRunnerUtils
                         Files.write(catalogDirectoryPath.resolve("tpcds.properties"),
                                 format("connector.name=tpcds%n").getBytes());
 
+                        Path cryptDirectoryPath = tempDirectoryPath.resolve("crypt");
+                        Files.createDirectory(cryptDirectoryPath);
+                        Path secretsFile = cryptDirectoryPath.resolve("mock_secrets");
+                        Files.write(secretsFile,
+                                String.format(
+                                        "AWS_ACCESS_KEY_ID=AKIAEXAMPLE123456%n" +
+                                                "AWS_SECRET_ACCESS_KEY=SuperSecretKey123%n" +
+                                                "DB_PASSWORD=MySecurePassword%n" +
+                                                "S3_BUCKET_NAME=my-presto-test-bucket%n" +
+                                                "API_TOKEN=mock-api-token-98765").getBytes());
+
                         // Disable stack trace capturing as some queries (using TRY) generate a lot of exceptions.
-                        return new ProcessBuilder(prestoServerPath, "--logtostderr=1", "--v=1", "--velox_ssd_odirect=false")
-                                .directory(tempDirectoryPath.toFile())
-                                .redirectErrorStream(true)
-                                .redirectOutput(ProcessBuilder.Redirect.to(tempDirectoryPath.resolve("worker." + workerIndex + ".out").toFile()))
-                                .redirectError(ProcessBuilder.Redirect.to(tempDirectoryPath.resolve("worker." + workerIndex + ".out").toFile()))
-                                .start();
+                        ProcessBuilder builder = new ProcessBuilder(
+                                prestoServerPath.toString(),
+                                "--logtostderr=1",
+                                "--v=1",
+                                "--velox_ssd_odirect=false"
+                        ).directory(tempDirectoryPath.toFile())
+                                .redirectOutput(tempDirectoryPath.resolve("worker." + workerIndex + ".out").toFile())
+                                .redirectError(tempDirectoryPath.resolve("worker." + workerIndex + ".out").toFile())
+                                .redirectErrorStream(true);
+
+                        // Set environment variable pointing to secrets file
+                        builder.environment().put("IBMLH_SECRET_PROPS_FILE", secretsFile.toString());
+
+                        try {
+                            Path libraryPath = compileDecryptLibrary(cryptDirectoryPath);
+                            builder.environment().put("LD_PRELOAD", libraryPath.toAbsolutePath().toString());
+                        }
+                        catch (RuntimeException | InterruptedException e) {
+                            log.info("LD_PRELOAD library failed to compile.");
+                        }
+                        Process process = builder.start();
+                        return process;
                     }
                     catch (IOException e) {
                         throw new UncheckedIOException(e);

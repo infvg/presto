@@ -29,6 +29,7 @@ add_library(
   CatalogRegisterer.cpp
   CPUMon.cpp
   CoordinatorDiscoverer.cpp
+  CryptUtils.cpp
   PeriodicMemoryChecker.cpp
   PeriodicTaskManager.cpp
   PrestoExchangeSource.cpp

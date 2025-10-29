@@ -13,6 +13,7 @@
  */
 
 #include "CatalogRegisterer.h"
+#include "CryptUtils.h"
 #include "presto_cpp/main/common/ConfigReader.h"
 #include "presto_cpp/main/common/Configs.h"
 #include "presto_cpp/main/common/Utils.h"
@@ -56,6 +57,25 @@ void extractValueIfEnvironmentVariable(std::string& value) {
     }
   }
 }
+
+// Replaces strings of the form "${VAR}"
+// with decrypted values from CryptUtils secrets file.
+// Returns true on sucessful replacement.
+bool extractValueIfEncrypted(
+    std::string& value,
+    const std::unordered_map<std::string, std::string>& decryptedProperties) {
+  if (value.size() > 3 && value.substr(0, 2) == "${" && value.back() == '}') {
+    std::string key = value.substr(2, value.size() - 3);
+    auto it = decryptedProperties.find(key);
+    if (it != decryptedProperties.end()) {
+      LOG(INFO) << "Replacing " << value << "\n";
+      value = it->second;
+      return true;
+    }
+  }
+  return false;
+}
+
 } // namespace
 
 void CatalogRegisterer::init(
@@ -120,11 +140,11 @@ void CatalogRegisterer::registerCatalogFromJson(
         std::string(kPropertiesExtension);
     try {
       LOG(INFO) << fmt::format(
-          "Writing catalog file %s.", propertyFile.string());
+          "Writing catalog file {}.", propertyFile.string());
       writeConfigToFile(propertyFile, propertiesString.str());
     } catch (const std::exception& ex) {
       LOG(WARNING) << fmt::format(
-          "Failed to write catalog file %s: %s",
+          "Failed to write catalog file {}: {}",
           propertyFile.string(),
           ex.what());
     }
@@ -164,11 +184,11 @@ void CatalogRegisterer::registerCatalog(
   getPrestoToVeloxConnector(connectorName);
 
   auto connector = getConnectorFactory(connectorName)
-                     ->newConnector(
-                         catalogName,
-                         std::move(properties),
-                         connectorIoExecutor_,
-                         connectorCpuExecutor_);
+                       ->newConnector(
+                           catalogName,
+                           std::move(properties),
+                           connectorIoExecutor_,
+                           connectorCpuExecutor_);
   VELOX_CHECK_NOT_NULL(connector, "Connector is null.");
   velox::connector::registerConnector(connector);
 
@@ -181,6 +201,14 @@ CatalogRegisterer::readConfigFromJson(
     const nlohmann::json& json,
     std::ostringstream& propertiesString) {
   std::unordered_map<std::string, std::string> config;
+  auto decryptedProperties = CryptUtils::loadDecryptedProperties();
+
+  LOG(INFO) << "Decrypted keys:" << std::endl;
+  for (const auto& [key, value] : decryptedProperties) {
+    LOG(INFO) << key << std::endl;
+  }
+
+  LOG(INFO) << "Processing config:" << std::endl;
   for (auto it = json.begin(); it != json.end(); ++it) {
     VELOX_USER_CHECK(
         it.value().is_string(),
@@ -188,12 +216,17 @@ CatalogRegisterer::readConfigFromJson(
             "Value for key '{}' must be a string, but got: {}",
             it.key(),
             it.value().dump()));
-    propertiesString << it.key() << "=" << it.value().get<std::string>()
-                     << "\n";
+    std::string currentProperty =
+        it.key() + "=" + it.value().get<std::string>() + "\n";
+    LOG(INFO) << currentProperty;
+    propertiesString << currentProperty;
 
     // Fill in the mapping for in-memory catalog creation.
     auto value = it.value().get<std::string>();
-    extractValueIfEnvironmentVariable(value);
+
+    if (extractValueIfEncrypted(value, decryptedProperties)) {
+      extractValueIfEnvironmentVariable(value);
+    }
     config.emplace(it.key(), value);
   }
   return config;

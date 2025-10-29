@@ -110,7 +110,11 @@ public class TestPrestoNativeDynamicCatalog
 
         // Valid config
         String jsonPayload = "{"
-                + "\"connector.name\": \"hive\""
+                + "\"connector.name\": \"hive\","
+                + "\"hive.metastore.uri\": \"thrift://localhost:9083\","
+                + "\"hive.s3.aws-access-key\": \"${AWS_ACCESS_KEY_ID}\","
+                + "\"hive.s3.aws-secret-key\": \"${AWS_SECRET_ACCESS_KEY}\","
+                + "\"hive.s3.bucket\": \"${S3_BUCKET_NAME}\""
                 + "}";
 
         // Attempt to register a duplicate catalog
@@ -149,7 +153,11 @@ public class TestPrestoNativeDynamicCatalog
                 .hasMessageContaining("sortedCandidates is null or empty for ModularHashingNodeProvider");
 
         String jsonPayload = "{"
-                + "\"connector.name\": \"hive\""
+                + "\"connector.name\": \"hive\","
+                + "\"hive.metastore.uri\": \"thrift://localhost:9083\","
+                + "\"hive.s3.aws-access-key\": \"${AWS_ACCESS_KEY_ID}\","
+                + "\"hive.s3.aws-secret-key\": \"${AWS_SECRET_ACCESS_KEY}\","
+                + "\"hive.s3.bucket\": \"${S3_BUCKET_NAME}\""
                 + "}";
 
         endpoints.forEach((endpoint) -> runCatalogRegister(endpoint, jsonPayload, "hive2"));
