@@ -14,8 +14,8 @@
 
     <properties>
         <air.main.basedir>${project.parent.basedir}</air.main.basedir>
-        <!-- Custom kudu version built from branch: https://github.ibm.com/lakehouse/wxd-kudu/tree/1.17.5-wxd -->
-        <kudu.version>1.17.5-wxd</kudu.version>
+        <!-- Custom kudu version built from branch: https://github.ibm.com/lakehouse/wxd-kudu/tree/1.17.6-wxd -->
+        <kudu.version>1.17.6-wxd</kudu.version>
         <air.check.skip-modernizer>true</air.check.skip-modernizer>
         <yetus.audience-annotations.version>0.15.1</yetus.audience-annotations.version>
     </properties>
