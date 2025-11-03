@@ -51,6 +51,7 @@
     <artifactSet to="plugin/db-session-property-manager">
         <artifact id="${project.groupId}:presto-db-session-property-manager:zip:${project.version}">
             <unpack />
+            <exclude dir="mysql-connector-j-9.2.0.jar" />
         </artifact>
     </artifactSet>
 
@@ -288,6 +289,7 @@
     <artifactSet to="native-plugin/resource-group-managers">
         <artifact id="${project.groupId}:presto-resource-group-managers:zip:${project.version}">
             <unpack />
+            <exclude dir="mysql-connector-j-9.2.0.jar" />
         </artifact>
     </artifactSet>
 
@@ -306,12 +308,14 @@
     <artifactSet to="native-plugin/db-session-property-manager">
         <artifact id="${project.groupId}:presto-db-session-property-manager:zip:${project.version}">
             <unpack />
+            <exclude dir="mysql-connector-j-9.2.0.jar" />
         </artifact>
     </artifactSet>
 
     <artifactSet to="native-plugin/function-namespace-managers">
         <artifact id="${project.groupId}:presto-function-namespace-managers:zip:${project.version}">
             <unpack />
+            <exclude dir="mysql-connector-j-9.2.0.jar" />
         </artifact>
     </artifactSet>
 
