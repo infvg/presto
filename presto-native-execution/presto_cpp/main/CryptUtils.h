@@ -3,18 +3,15 @@
 #include <string>
 #include <unordered_map>
 
-#if __has_include(<filesystem>)
 #include <filesystem>
 namespace fs = std::filesystem;
-#else
-#include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
-#endif
 
 namespace facebook::presto {
 
 struct CryptUtils {
   CryptUtils() = default;
+
+  static constexpr int kBufferSize = 2 * 4096;
 
  private:
   static std::unordered_map<std::string, std::string> loadProperties(
