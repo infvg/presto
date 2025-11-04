@@ -527,6 +527,9 @@ proxygen::RequestHandler* TaskResource::getResults(
                     proxygen::ResponseBuilder builder(downstream);
                     builder.status(status, "")
                         .header(
+                            proxygen::HTTP_HEADER_STRICT_TRANSPORT_SECURITY,
+                            "max-age=31536000; includeSubDomains; preload")
+                        .header(
                             proxygen::HTTP_HEADER_CONTENT_TYPE,
                             protocol::PRESTO_PAGES_MIME_TYPE)
                         .header(

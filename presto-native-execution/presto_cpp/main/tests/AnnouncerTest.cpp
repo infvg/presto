@@ -90,6 +90,7 @@ std::unique_ptr<facebook::presto::test::HttpServerWrapper> makeDiscoveryServer(
         onAnnouncement();
         proxygen::ResponseBuilder(downstream)
             .status(http::kHttpAccepted, "Accepted")
+            .header(proxygen::HTTP_HEADER_STRICT_TRANSPORT_SECURITY, "max-age=31536000; includeSubDomains; preload")
             .sendWithEOM();
       });
   return std::make_unique<facebook::presto::test::HttpServerWrapper>(

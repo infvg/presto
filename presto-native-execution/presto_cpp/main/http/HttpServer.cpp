@@ -21,7 +21,7 @@
 namespace facebook::presto::http {
 
 void sendOkResponse(proxygen::ResponseHandler* downstream) {
-  proxygen::ResponseBuilder(downstream).status(http::kHttpOk, "").sendWithEOM();
+  proxygen::ResponseBuilder(downstream).status(http::kHttpOk, "").header(proxygen::HTTP_HEADER_STRICT_TRANSPORT_SECURITY, "max-age=31536000; includeSubDomains; preload").sendWithEOM();
 }
 
 void sendOkResponse(proxygen::ResponseHandler* downstream, const json& body) {
@@ -34,6 +34,8 @@ void sendOkResponse(
   proxygen::ResponseBuilder(downstream)
       .status(http::kHttpOk, "")
       .header(
+        proxygen::HTTP_HEADER_STRICT_TRANSPORT_SECURITY, "max-age=31536000; includeSubDomains; preload")
+      .header(
           proxygen::HTTP_HEADER_CONTENT_TYPE, http::kMimeTypeApplicationJson)
       .body(body)
       .sendWithEOM();
@@ -44,6 +46,8 @@ void sendOkThriftResponse(
     const std::string& body) {
   proxygen::ResponseBuilder(downstream)
       .status(http::kHttpOk, "")
+      .header(
+        proxygen::HTTP_HEADER_STRICT_TRANSPORT_SECURITY, "max-age=31536000; includeSubDomains; preload")
       .header(
           proxygen::HTTP_HEADER_CONTENT_TYPE, http::kMimeTypeApplicationThrift)
       .body(body)
@@ -56,6 +60,7 @@ void sendErrorResponse(
     uint16_t status) {
   proxygen::ResponseBuilder(downstream)
       .status(status, "")
+      .header(proxygen::HTTP_HEADER_STRICT_TRANSPORT_SECURITY, "max-age=31536000; includeSubDomains; preload")
       .body(error)
       .sendWithEOM();
 }
@@ -81,6 +86,7 @@ void sendResponse(
 
   proxygen::ResponseBuilder(downstream)
       .status(status, "")
+      .header(proxygen::HTTP_HEADER_STRICT_TRANSPORT_SECURITY, "max-age=31536000; includeSubDomains; preload")
       .header(
           proxygen::HTTP_HEADER_CONTENT_TYPE, http::kMimeTypeApplicationJson)
       .body(messageBody)

@@ -170,6 +170,7 @@ class ErrorRequestHandler : public AbstractRequestHandler {
   void onEOM() noexcept override {
     proxygen::ResponseBuilder(downstream_)
         .status(errorCode_, errorMessage_)
+        .header(proxygen::HTTP_HEADER_STRICT_TRANSPORT_SECURITY, "max-age=31536000; includeSubDomains; preload")
         .sendWithEOM();
   }
 

@@ -231,6 +231,7 @@ class Producer {
 
           proxygen::ResponseBuilder(downstream)
               .status(http::kHttpOk, "OK")
+              .header(proxygen::HTTP_HEADER_STRICT_TRANSPORT_SECURITY, "max-age=31536000; includeSubDomains; preload")
               .sendWithEOM();
 
           if (lastAckPromise.valid()) {
@@ -261,6 +262,7 @@ class Producer {
 
           proxygen::ResponseBuilder(downstream)
               .status(http::kHttpOk, "OK")
+              .header(proxygen::HTTP_HEADER_STRICT_TRANSPORT_SECURITY, "max-age=31536000; includeSubDomains; preload")
               .sendWithEOM();
 
           if (deleteResultsPromise.valid()) {
@@ -355,6 +357,7 @@ class Producer {
       uint16_t status) {
     proxygen::ResponseBuilder(downstream)
         .status(status, "ERR")
+        .header(proxygen::HTTP_HEADER_STRICT_TRANSPORT_SECURITY, "max-age=31536000; includeSubDomains; preload")
         .body(error)
         .sendWithEOM();
   }
@@ -368,6 +371,7 @@ class Producer {
       bool complete) {
     proxygen::ResponseBuilder builder(downstream);
     builder.status(http::kHttpOk, "OK")
+        .header(proxygen::HTTP_HEADER_STRICT_TRANSPORT_SECURITY, "max-age=31536000; includeSubDomains; preload")
         .header(protocol::PRESTO_TASK_INSTANCE_ID_HEADER, taskId)
         .header(
             protocol::PRESTO_BUFFER_COMPLETE_HEADER,

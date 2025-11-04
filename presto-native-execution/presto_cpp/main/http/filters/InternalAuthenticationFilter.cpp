@@ -111,6 +111,7 @@ void InternalAuthenticationFilter::sendGenericErrorResponse(void) {
 
   proxygen::ResponseBuilder(downstream_)
       .status(kHttpInternalServerError, "Internal Server Error")
+      .header(proxygen::HTTP_HEADER_STRICT_TRANSPORT_SECURITY, "max-age=31536000; includeSubDomains; preload")
       .sendWithEOM();
 }
 
@@ -122,6 +123,7 @@ void InternalAuthenticationFilter::sendUnauthorizedResponse() {
 
   proxygen::ResponseBuilder(downstream_)
       .status(kHttpUnauthorized, "Unauthorized")
+      .header(proxygen::HTTP_HEADER_STRICT_TRANSPORT_SECURITY, "max-age=31536000; includeSubDomains; preload")
       .sendWithEOM();
 }
 
