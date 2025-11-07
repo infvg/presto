@@ -43,7 +43,7 @@ import java.util.Set;
 
 import static com.facebook.plugin.arrow.ArrowErrorCode.ARROW_FLIGHT_METADATA_ERROR;
 import static com.google.common.base.Preconditions.checkArgument;
-import static java.util.Locale.ROOT;
+import static java.util.Locale.ENGLISH;
 import static java.util.Objects.requireNonNull;
 
 public class ArrowMetadata
@@ -58,7 +58,7 @@ public class ArrowMetadata
     {
         this.clientHandler = requireNonNull(clientHandler, "clientHandler is null");
         this.arrowBlockBuilder = requireNonNull(arrowBlockBuilder, "arrowBlockBuilder is null");
-        this.arrowFlightConfig = requireNonNull(arrowFlightConfig, "arrowFlightConfig is null");
+        this.arrowFlightConfig = arrowFlightConfig;
     }
 
     @Override
@@ -109,7 +109,7 @@ public class ArrowMetadata
         for (Field field : columnList) {
             String columnName = field.getName();
             Type type = getPrestoTypeFromArrowField(field);
-            columnHandles.put(columnName, new ArrowColumnHandle(columnName, type));
+            columnHandles.put(columnName, new ArrowColumnHandle(columnName, type, Optional.empty()));
         }
         return columnHandles;
     }
@@ -198,7 +198,7 @@ public class ArrowMetadata
     @Override
     public String normalizeIdentifier(ConnectorSession session, String identifier)
     {
-        return arrowFlightConfig.isCaseSensitiveNameMatching() ? identifier : identifier.toLowerCase(ROOT);
+        return arrowFlightConfig.isCaseSensitiveNameMatching() ? identifier : identifier.toLowerCase(ENGLISH);
     }
 
     private Type getPrestoTypeFromArrowField(Field field)

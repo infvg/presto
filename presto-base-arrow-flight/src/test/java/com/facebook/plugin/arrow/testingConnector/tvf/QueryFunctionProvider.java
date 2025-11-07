@@ -142,7 +142,7 @@ public class QueryFunctionProvider
             if (prestoType == null) {
                 throw new PrestoException(INVALID_FUNCTION_ARGUMENT, "Unsupported data type: " + matcher.group(2));
             }
-            columnHandles.add(new ArrowColumnHandle(matcher.group(1), prestoType));
+            columnHandles.add(new ArrowColumnHandle(matcher.group(1), prestoType, Optional.empty()));
         }
 
         return columnHandles;
