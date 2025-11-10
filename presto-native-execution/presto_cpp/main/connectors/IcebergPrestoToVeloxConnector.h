@@ -16,6 +16,9 @@
 
 #include "presto_cpp/main/connectors/PrestoToVeloxConnector.h"
 #include "presto_cpp/presto_protocol/connector/iceberg/presto_protocol_iceberg.h"
+#include "velox/connectors/hive/iceberg/IcebergColumnHandle.h"
+#include "velox/connectors/hive/iceberg/IcebergDataSink.h"
+#include "velox/connectors/hive/iceberg/PartitionSpec.h"
 
 namespace facebook::presto {
 
@@ -44,18 +47,27 @@ class IcebergPrestoToVeloxConnector final : public PrestoToVeloxConnector {
   std::unique_ptr<velox::connector::ConnectorInsertTableHandle>
   toVeloxInsertTableHandle(
       const protocol::CreateHandle* createHandle,
-      const TypeParser& typeParser) const final;
+      const TypeParser& typeParser,
+      velox::memory::MemoryPool* pool) const final;
 
   std::unique_ptr<velox::connector::ConnectorInsertTableHandle>
   toVeloxInsertTableHandle(
       const protocol::InsertHandle* insertHandle,
-      const TypeParser& typeParser) const final;
+      const TypeParser& typeParser,
+      velox::memory::MemoryPool* pool) const final;
 
  private:
-  std::vector<velox::connector::hive::HiveColumnHandlePtr> toHiveColumns(
+  std::vector<std::shared_ptr<
+      const velox::connector::hive::iceberg::IcebergColumnHandle>>
+  toIcebergColumns(
       const protocol::List<protocol::iceberg::IcebergColumnHandle>&
           inputColumns,
       const TypeParser& typeParser) const;
+
+  std::vector<velox::connector::hive::iceberg::IcebergSortingColumn>
+  toIcebergSortingColumns(
+      protocol::List<protocol::iceberg::SortField>,
+      const protocol::iceberg::PrestoIcebergSchema& schema) const;
 };
 
 } // namespace facebook::presto
