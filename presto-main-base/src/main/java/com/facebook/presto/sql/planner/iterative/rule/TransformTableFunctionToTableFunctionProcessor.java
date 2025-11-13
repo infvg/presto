@@ -60,7 +60,6 @@ import java.util.stream.Stream;
 import static com.facebook.presto.common.block.SortOrder.ASC_NULLS_LAST;
 import static com.facebook.presto.common.type.BigintType.BIGINT;
 import static com.facebook.presto.common.type.BooleanType.BOOLEAN;
-import static com.facebook.presto.common.type.IntegerType.INTEGER;
 import static com.facebook.presto.spi.plan.JoinType.FULL;
 import static com.facebook.presto.spi.plan.JoinType.INNER;
 import static com.facebook.presto.spi.plan.JoinType.LEFT;
@@ -131,7 +130,7 @@ import static java.util.function.Function.identity;
  *                          - source T2(a2, b2)
  * </pre>
  */
-public class ImplementTableFunctionSource
+public class TransformTableFunctionToTableFunctionProcessor
         implements Rule<TableFunctionNode>
 {
     private static final Pattern<TableFunctionNode> PATTERN = tableFunction();
@@ -149,7 +148,7 @@ public class ImplementTableFunctionSource
 
     private final Metadata metadata;
 
-    public ImplementTableFunctionSource(Metadata metadata)
+    public TransformTableFunctionToTableFunctionProcessor(Metadata metadata)
     {
         this.metadata = requireNonNull(metadata, "metadata is null");
     }
@@ -413,7 +412,7 @@ public class ImplementTableFunctionSource
                         BOOLEAN,
                         ImmutableList.of(
                                 new CallExpression(IS_DISTINCT_FROM.name(),
-                                        functionResolution.comparisonFunction(IS_DISTINCT_FROM, INTEGER, INTEGER),
+                                        functionResolution.comparisonFunction(IS_DISTINCT_FROM, leftColumn.getType(), rightColumn.getType()),
                                         BOOLEAN,
                                         ImmutableList.of(leftColumn, rightColumn)))))
                 .<RowExpression>map(expr -> expr)
