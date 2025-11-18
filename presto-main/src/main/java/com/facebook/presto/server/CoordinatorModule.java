@@ -197,6 +197,7 @@ public class CoordinatorModule
         jsonCodecBinder(binder).bindJsonCodec(OperatorInfo.class);
         configBinder(binder).bindConfig(QueryMonitorConfig.class);
         binder.bind(QueryMonitor.class).in(Scopes.SINGLETON);
+        newExporter(binder).export(QueryMonitor.class).withGeneratedName();
         binder.bind(QueryProgressMonitor.class).in(Scopes.SINGLETON);
 
         // query manager

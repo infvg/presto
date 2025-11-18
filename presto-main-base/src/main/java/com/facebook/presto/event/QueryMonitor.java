@@ -30,6 +30,7 @@ import com.facebook.presto.cost.StatsAndCosts;
 import com.facebook.presto.eventlistener.EventListenerManager;
 import com.facebook.presto.execution.ExecutionFailureInfo;
 import com.facebook.presto.execution.Input;
+import com.facebook.presto.execution.QueryCatalogStats;
 import com.facebook.presto.execution.QueryInfo;
 import com.facebook.presto.execution.QueryStats;
 import com.facebook.presto.execution.StageExecutionInfo;
@@ -77,6 +78,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import jakarta.inject.Inject;
+import org.weakref.jmx.Flatten;
+import org.weakref.jmx.Managed;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -121,6 +124,7 @@ public class QueryMonitor
     private final HistoryBasedPlanStatisticsTracker historyBasedPlanStatisticsTracker;
     private final int maxJsonLimit;
     private final String workerType;
+    private final QueryCatalogStats stats = new QueryCatalogStats();
 
     @Inject
     public QueryMonitor(
@@ -288,6 +292,7 @@ public class QueryMonitor
 
     public void queryCompletedEvent(QueryInfo queryInfo)
     {
+        stats.updateQueriesByCatalogDistribution(queryInfo);
         QueryStats queryStats = queryInfo.getQueryStats();
         ImmutableList.Builder<StageStatistics> stageStatisticsBuilder = ImmutableList.builder();
         if (queryInfo.getOutputStage().isPresent()) {
@@ -328,6 +333,13 @@ public class QueryMonitor
                         Optional.ofNullable(queryInfo.getUpdateInfo()).map(UpdateInfo::getUpdateObject)));
 
         logQueryTimeline(queryInfo);
+    }
+
+    @Managed
+    @Flatten
+    public QueryCatalogStats getStats()
+    {
+        return stats;
     }
 
     private List<PlanStatisticsWithSourceInfo> createPlanStatistics(StatsAndCosts planStatsAndCosts)

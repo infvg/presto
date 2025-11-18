@@ -26,8 +26,8 @@ import static java.util.Objects.requireNonNull;
 @ThriftStruct
 public final class ConnectorId
 {
-    private static final String INFORMATION_SCHEMA_CONNECTOR_PREFIX = "$info_schema@";
-    private static final String SYSTEM_TABLES_CONNECTOR_PREFIX = "$system@";
+    public static final String INFORMATION_SCHEMA_CONNECTOR_PREFIX = "$info_schema@";
+    public static final String SYSTEM_TABLES_CONNECTOR_PREFIX = "$system@";
 
     private final String catalogName;
 
