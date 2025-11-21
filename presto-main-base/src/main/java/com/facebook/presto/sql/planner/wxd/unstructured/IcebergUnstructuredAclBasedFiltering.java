@@ -19,6 +19,7 @@ import com.facebook.presto.common.QualifiedObjectName;
 import com.facebook.presto.common.predicate.TupleDomain;
 import com.facebook.presto.metadata.Metadata;
 import com.facebook.presto.spi.ColumnHandle;
+import com.facebook.presto.spi.PrestoException;
 import com.facebook.presto.spi.SchemaTableName;
 import com.facebook.presto.spi.TableHandle;
 import com.facebook.presto.spi.VariableAllocator;
@@ -51,6 +52,7 @@ import java.util.Set;
 import static com.facebook.presto.common.type.BooleanType.BOOLEAN;
 import static com.facebook.presto.common.type.VarcharType.VARCHAR;
 import static com.facebook.presto.spi.ConnectorId.isInternalSystemConnector;
+import static com.facebook.presto.spi.StandardErrorCode.COLUMN_NOT_FOUND;
 import static com.facebook.presto.spi.relation.SpecialFormExpression.Form.IN;
 import static java.util.Objects.requireNonNull;
 
@@ -154,7 +156,7 @@ public class IcebergUnstructuredAclBasedFiltering
                 return tableScanNode;
             }
             if (docIdColumnHandle == null) {
-                throw new RuntimeException("Table schema validation failed: the required column ‘document_id’ is not present");
+                throw new PrestoException(COLUMN_NOT_FOUND, "Column not found: " + DOCUMENT_ID_COLUMN_NAME);
             }
             Optional<VariableReferenceExpression> dataTableDocIdVariable = tableScanNode.getAssignments().entrySet().stream()
                     .filter(x -> x.getValue().equals(docIdColumnHandle))
