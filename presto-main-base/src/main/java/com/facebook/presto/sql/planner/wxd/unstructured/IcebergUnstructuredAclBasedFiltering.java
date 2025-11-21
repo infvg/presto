@@ -144,7 +144,7 @@ public class IcebergUnstructuredAclBasedFiltering
             QualifiedObjectName qualifiedObjectName = QualifiedObjectName.valueOf(catalog, tableName.getSchemaName(), tableName.getTableName());
             try {
                 Boolean isUnstrucutredTable = cpgClient.isUnstructuredTable(bearerToken, qualifiedObjectName);
-                if (!isUnstrucutredTable || docIdColumnHandle == null) {
+                if (!isUnstrucutredTable) {
                     log.info("%s is not an unstructured table ", qualifiedObjectName.toString());
                     return tableScanNode;
                 }
@@ -153,7 +153,9 @@ public class IcebergUnstructuredAclBasedFiltering
                 log.error(e, "Exception occurred while checking unstructured table for: %s", qualifiedObjectName.toString());
                 return tableScanNode;
             }
-
+            if (docIdColumnHandle == null) {
+                throw new RuntimeException("Table schema validation failed: the required column ‘document_id’ is not present");
+            }
             Optional<VariableReferenceExpression> dataTableDocIdVariable = tableScanNode.getAssignments().entrySet().stream()
                     .filter(x -> x.getValue().equals(docIdColumnHandle))
                     .map(Map.Entry::getKey)
