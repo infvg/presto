@@ -48,6 +48,7 @@ public class CPGClient
     private static final String LH_INSTANCE_ID_CPD = "LH_INSTANCE_ID";
     private static final String MDS_REST_URL = "MDS_REST_URL";
     private static final String LH_INSTANCE_ID_SAAS = "ID";
+    private static final String LH_INSTANCE_ID_ROKS = "CRN";
     private static final String LH_INSTANCE_ID_LITE = "REAL_INSTANCE_ID";
     private static final String LH_INSTANCE_ID_PATH_LITE = "REAL_INSTANCE_ID_PATH";
     private static final String LH_INSTANCE_SECRET = "LH_INSTANCE_SECRET";
@@ -336,6 +337,10 @@ public class CPGClient
             catch (IOException e) {
                 log.debug("Instance Id path variable is empty,returning ID environment variable");
             }
+        }
+        String instanceIdRoks = System.getenv(LH_INSTANCE_ID_ROKS);
+        if (instanceIdRoks != null && !instanceIdRoks.isEmpty()) {
+            return instanceIdRoks;
         }
         return System.getenv(LH_INSTANCE_ID_SAAS);
     }
