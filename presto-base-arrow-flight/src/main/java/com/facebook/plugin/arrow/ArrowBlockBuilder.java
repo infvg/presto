@@ -73,11 +73,7 @@ import org.apache.arrow.vector.types.pojo.Field;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -436,23 +432,9 @@ public class ArrowBlockBuilder
             }
             else {
                 long millis = vector.get(i);
-                // Interpret Arrow millis as if they were "local wall-clock time" in datasource
-                long localMillis = getLocalMillisFromUTCMillis(millis);
-                type.writeLong(builder, localMillis);
+                type.writeLong(builder, millis);
             }
         }
-    }
-
-    private static long getLocalMillisFromUTCMillis(long millis)
-    {
-        LocalDateTime localDateTime = Instant.ofEpochMilli(millis)
-                .atZone(ZoneOffset.UTC)  // treat raw millis as UTC
-                .toLocalDateTime();
-
-        // Rebuild millis in local epoch (wall-clock, no shift)
-        return localDateTime.atZone(ZoneId.systemDefault())
-                .toInstant()
-                .toEpochMilli();
     }
 
     public void assignBlockFromFloat8Vector(Float8Vector vector, Type type, BlockBuilder builder, int startIndex, int endIndex)
@@ -577,8 +559,7 @@ public class ArrowBlockBuilder
             }
             else {
                 long millis = vector.get(i);
-                long localMillis = getLocalMillisFromUTCMillis(millis);
-                type.writeLong(builder, localMillis);
+                type.writeLong(builder, millis);
             }
         }
     }
@@ -658,9 +639,7 @@ public class ArrowBlockBuilder
             }
             else {
                 long millis = vector.get(i);
-                // Interpret Arrow millis as if they were "local wall-clock time" in datasource
-                long localMillis = getLocalMillisFromUTCMillis(millis);
-                type.writeLong(builder, localMillis);
+                type.writeLong(builder, millis);
             }
         }
     }

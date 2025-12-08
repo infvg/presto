@@ -66,11 +66,7 @@ import org.testng.annotations.Test;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -730,15 +726,6 @@ public class TestArrowBlockBuilder
 
             Block block = builder.build();
             long result = timestampType.getLong(block, 0);
-            // Recompute expected according to current reinterpretation logic
-            LocalDateTime localDateTime = Instant.ofEpochMilli(value)
-                    .atZone(ZoneOffset.UTC)   // interpret Arrow millis as UTC
-                    .toLocalDateTime();
-
-            value = localDateTime
-                    .atZone(ZoneId.systemDefault())  // reinterpret in system default
-                    .toInstant()
-                    .toEpochMilli();
             assertEquals(result, value);
         }
     }
@@ -761,15 +748,6 @@ public class TestArrowBlockBuilder
 
             Block block = builder.build();
             long result = timestampType.getLong(block, 0);
-            // Recompute expected according to current reinterpretation logic
-            LocalDateTime localDateTime = Instant.ofEpochMilli(expectedMillis)
-                    .atZone(ZoneOffset.UTC)   // interpret Arrow millis as UTC
-                    .toLocalDateTime();
-
-            expectedMillis = localDateTime
-                    .atZone(ZoneId.systemDefault())  // reinterpret in system default
-                    .toInstant()
-                    .toEpochMilli();
             assertEquals(result, expectedMillis);
         }
     }
